@@ -8,10 +8,28 @@
     xmlns:prismMvvm="using:Prism.Mvvm"
     xmlns:prismRegions="using:Prism.Regions"
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
+    HorizontalContentAlignment="Stretch"
+    VerticalContentAlignment="Stretch"
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.RowDefinitions>
+        <NavigationView
+            IsBackButtonVisible="Collapsed"
+            OpenPaneLength="160"
+            IsSettingsVisible="False"
+            Header="UnoContoso">
+            <NavigationView.MenuItems>
+                <NavigationViewItem
+                    x:Name="CustomerListMenuItem"
+                    Content="Customer" 
+                    Icon="ContactInfo"/>
+                <NavigationViewItem
+                    x:Name="OrderListMenuItem"
+                    Content="Order" 
+                    Icon="Shop"/>
+            </NavigationView.MenuItems>            
+        </NavigationView>
+        <!--<Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -19,6 +37,6 @@
             <TextBlock Text="{Binding Title}" FontSize="30" />
             <TextBlock Text="Welcome to Uno/WinUI and Prism!" FontSize="15" />
         </StackPanel>
-        <ContentControl Grid.Row="1" prismRegions:RegionManager.RegionName="ContentRegion" />
+        <ContentControl Grid.Row="1" prismRegions:RegionManager.RegionName="ContentRegion" />-->
     </Grid>
 </ContentControl>

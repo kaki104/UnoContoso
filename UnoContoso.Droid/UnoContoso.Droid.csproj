@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>a99917c8-9110-4177-a5b0-b12f1ae4bbfe</ProjectGuid>
+    <ProjectGuid>{A99917C8-9110-4177-A5B0-B12F1AE4BBFE}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -56,10 +56,14 @@
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
+      <Version>3.1.8</Version>
+    </PackageReference>
     <PackageReference Include="Uno.UI" Version="3.1.0-dev.715" />
     <PackageReference Include="Uno.UI.RemoteControl" Version="3.1.0-dev.715" Condition="'$(Configuration)'=='Debug'" />
     <PackageReference Include="Uno.UniversalImageLoader" Version="1.9.32" />
@@ -88,6 +92,16 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Styles.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UnoContoso.Models\UnoContoso.Models.csproj">
+      <Project>{a5223f76-52f0-46e8-8a8b-1311fc633109}</Project>
+      <Name>UnoContoso.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UnoContoso.Repository\UnoContoso.Repository.csproj">
+      <Project>{4027EADE-BAEF-4BD2-8184-26D8FF06D59F}</Project>
+      <Name>UnoContoso.Repository</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\UnoContoso.Shared\UnoContoso.Shared.projitems" Label="Shared" Condition="Exists('..\UnoContoso.Shared\UnoContoso.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

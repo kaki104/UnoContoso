@@ -19,6 +19,14 @@ using Prism.Modularity;
 using Prism;
 using Prism.Ioc;
 using UnoContoso.Views;
+using Windows.Storage;
+using UnoContoso.Repository;
+using UnoContoso.Repository.Rest;
+using UnoContoso.Repository.Sql;
+using DryIoc;
+using Microsoft.EntityFrameworkCore;
+using UnoContoso.Helpers;
+using System.Threading.Tasks;
 
 namespace UnoContoso
 {
@@ -45,7 +53,7 @@ namespace UnoContoso
 		/// <param name="e">Details about the launch request and process.</param>
 		protected override void OnLaunched(LaunchActivatedEventArgs e)
 		{
-            base.OnLaunched(e);
+			base.OnLaunched(e);
 		}
 
         /// <summary>
@@ -69,12 +77,29 @@ namespace UnoContoso
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-        }
+			containerRegistry.Register<IContosoRepository, RestContosoRepository>("Rest");
+			containerRegistry.Register<IContosoRepository, SqlContosoRepository>("Sql");
+
+			// Load the database.
+			if (ApplicationData.Current.LocalSettings.Values.TryGetValue(
+				"data_source", out object dataSource))
+			{
+				switch (dataSource.ToString())
+				{
+					case "Rest": UseRest(); break;
+					default: UseSqlite(containerRegistry); break;
+				}
+			}
+			else
+			{
+				UseSqlite(containerRegistry);
+			}
+		}
 
 		/// <summary>
-        /// Configures global logging
-        /// </summary>
-        /// <param name="factory"></param>
+		/// Configures global logging
+		/// </summary>
+		/// <param name="factory"></param>
 		static void ConfigureFilters(ILoggerFactory factory)
 		{
 			factory
@@ -123,5 +148,43 @@ namespace UnoContoso
 				.AddConsole(LogLevel.Information);
 #endif
 		}
-    }
+
+		/// <summary>
+		/// Configures the app to use the Sqlite data source. If no existing Sqlite database exists, 
+		/// loads a demo database filled with fake data so the app has content.
+		/// </summary>
+		public async void UseSqlite(IContainerRegistry containerRegistry)
+		{
+			string databasePath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Contoso.db");
+			if (!File.Exists(databasePath))
+			{
+				using (Stream sourceStream = await StreamHelperEx.GetEmbeddedFileStreamAsync(GetType(), "Contoso.db"))
+				{
+					var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("Contoso.db");
+					using (var fileStream = await file.OpenStreamForWriteAsync())
+                    {
+						await sourceStream.CopyToAsync(fileStream);
+						await fileStream.FlushAsync();
+                    }
+				}
+			}
+			var dbOptions = new DbContextOptionsBuilder<ContosoContext>().UseSqlite(
+				"Data Source=" + databasePath);
+			//var dbOptions = new DbContextOptionsBuilder<ContosoContext>();
+
+            //todo : 리졸브할때 파라메터를 던져주면되는데..귀찮음..수정해야지
+            //var repository = Container.Resolve<IContosoRepository>("Sql");
+            var repository = new SqlContosoRepository(dbOptions);
+			containerRegistry.RegisterInstance(repository);
+		}
+
+		/// <summary>
+		/// Configures the app to use the REST data source. For convenience, a read-only source is provided. 
+		/// You can also deploy your own copy of the REST service locally or to Azure. See the README for details.
+		/// </summary>
+		public void UseRest() 
+		{
+			//Repository = new RestContosoRepository("https://customers-orders-api-prod.azurewebsites.net/api/");
+		}
+	}
 }
