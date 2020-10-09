@@ -18,10 +18,19 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Behaviors\NavigationViewBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EventArgs\BusyEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EventArgs\MessageEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Events\BusyEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Events\MessageEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\StreamHelperEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CustomerListViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\HomeViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\CustomerListView.xaml.cs">
       <DependentUpon>CustomerListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\HomeView.xaml.cs">
+      <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Views\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
@@ -37,6 +46,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="$(MSBuildThisFileDirectory)Views\CustomerListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\HomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
