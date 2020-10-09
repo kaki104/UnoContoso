@@ -115,8 +115,17 @@
     <BundleResource Include="Resources\Fonts\uno-fluentui-assets.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore">
+      <Version>3.1.8</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
       <Version>3.1.8</Version>
+    </PackageReference>
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls">
+      <Version>6.1.0-build.191.gc988bdd4ff</Version>
+    </PackageReference>
+    <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls.DataGrid">
+      <Version>6.1.0-build.191.gc988bdd4ff</Version>
     </PackageReference>
     <PackageReference Include="Uno.UI" Version="3.1.0-dev.715" />
     <PackageReference Include="Uno.UI.RemoteControl" Version="3.1.0-dev.715" Condition="'$(Configuration)'=='Debug'" />

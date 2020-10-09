@@ -17,7 +17,7 @@
             IsBackButtonVisible="Collapsed"
             OpenPaneLength="160"
             IsSettingsVisible="False"
-            Header="UnoContoso">
+            AlwaysShowHeader="False">
             <NavigationView.MenuItems>
                 <NavigationViewItem
                     x:Name="CustomerListMenuItem"
@@ -27,7 +27,10 @@
                     x:Name="OrderListMenuItem"
                     Content="Order" 
                     Icon="Shop"/>
-            </NavigationView.MenuItems>            
+            </NavigationView.MenuItems>
+            <ContentControl prismRegions:RegionManager.RegionName="ContentRegion" 
+							HorizontalContentAlignment="Stretch"
+							VerticalContentAlignment="Stretch"/>
         </NavigationView>
         <!--<Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

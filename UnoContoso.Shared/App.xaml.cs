@@ -94,6 +94,8 @@ namespace UnoContoso
 			{
 				UseSqlite(containerRegistry);
 			}
+
+			containerRegistry.RegisterForNavigation<CustomerListView>();
 		}
 
 		/// <summary>
@@ -168,15 +170,16 @@ namespace UnoContoso
                     }
 				}
 			}
-			var dbOptions = new DbContextOptionsBuilder<ContosoContext>().UseSqlite(
-				"Data Source=" + databasePath);
-			//var dbOptions = new DbContextOptionsBuilder<ContosoContext>();
+
+            var dbOptions = new DbContextOptionsBuilder<ContosoContext>()
+				.UseSqlite("Data Source=" + databasePath);
+            //var dbOptions = new DbContextOptionsBuilder<ContosoContext>();
 
             //todo : 리졸브할때 파라메터를 던져주면되는데..귀찮음..수정해야지
             //var repository = Container.Resolve<IContosoRepository>("Sql");
             var repository = new SqlContosoRepository(dbOptions);
-			containerRegistry.RegisterInstance(repository);
-		}
+            containerRegistry.RegisterInstance(repository);
+        }
 
 		/// <summary>
 		/// Configures the app to use the REST data source. For convenience, a read-only source is provided. 
