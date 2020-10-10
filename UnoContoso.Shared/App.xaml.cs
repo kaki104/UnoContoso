@@ -27,6 +27,8 @@ using DryIoc;
 using Microsoft.EntityFrameworkCore;
 using UnoContoso.Helpers;
 using System.Threading.Tasks;
+using Prism.Mvvm;
+using System.Reflection;
 
 namespace UnoContoso
 {
@@ -77,8 +79,9 @@ namespace UnoContoso
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-			containerRegistry.Register<IContosoRepository, RestContosoRepository>("Rest");
-			containerRegistry.Register<IContosoRepository, SqlContosoRepository>("Sql");
+            containerRegistry.Register<IContosoRepository, RestContosoRepository>("Rest");
+            containerRegistry.Register<IContosoRepository, SqlContosoRepository>("Sql");
+            //containerRegistry.Register<IContosoRepository, SqlContosoRepository>();
 
 			// Load the database.
 			if (ApplicationData.Current.LocalSettings.Values.TryGetValue(
@@ -96,6 +99,36 @@ namespace UnoContoso
 			}
 
 			containerRegistry.RegisterForNavigation<CustomerListView>();
+		}
+
+        protected override void ConfigureViewModelLocator()
+        {
+            base.ConfigureViewModelLocator();
+			ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver((viewType) =>
+			{
+				string viewName = viewType.FullName;
+				if (viewName == null)
+				{
+					return null;
+				}
+
+				if (viewName.EndsWith("View"))
+				{
+					viewName = viewName.Substring(0, viewName.Length - 4);
+				}
+
+				if (viewName.EndsWith("Control"))
+				{
+					viewName = viewName.Substring(0, viewName.Length - 7);
+				}
+
+				viewName = viewName.Replace(".Views.", ".ViewModels.");
+				viewName = viewName.Replace(".Controls.", ".ControlViewModels.");
+				string viewAssemblyName = viewType.GetTypeInfo().Assembly.FullName;
+				string viewModelName = $"{viewName}ViewModel, {viewAssemblyName}";
+				return Type.GetType(viewModelName);
+			});
+
 		}
 
 		/// <summary>
@@ -178,7 +211,7 @@ namespace UnoContoso
             //todo : 리졸브할때 파라메터를 던져주면되는데..귀찮음..수정해야지
             //var repository = Container.Resolve<IContosoRepository>("Sql");
             var repository = new SqlContosoRepository(dbOptions);
-            containerRegistry.RegisterInstance(repository);
+            containerRegistry.RegisterInstance<IContosoRepository>(repository);
         }
 
 		/// <summary>

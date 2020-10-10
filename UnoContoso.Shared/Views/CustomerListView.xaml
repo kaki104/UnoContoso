@@ -8,14 +8,17 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity" 
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:prismMvvm="using:Prism.Mvvm"
+    prismMvvm:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
-
+    
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <RelativePanel>
             <TextBlock 
                 x:Name="PageTitle"
-                Text="Customers"
+                Text="{Binding Title}"
                 Style="{StaticResource TitleTextBlockStyle}"/>
+
             <CommandBar IsOpen="False"
                 x:Name="mainCommandBar"
                 HorizontalAlignment="Stretch"
@@ -30,7 +33,7 @@
                     Icon="Shop"
                     Label="Add order"
                     ToolTipService.ToolTip="Add order" />
-                <AppBarSeparator MaxHeight="40"/>
+                <AppBarSeparator />
                 <AppBarButton
                     Icon="Add"
                     Label="New"
@@ -52,12 +55,19 @@
                 RelativePanel.Below="PageTitle">
 
                 <toolkit:DataGrid
+                    x:Name="CustomerDataGrid"
                     CanUserReorderColumns="False"
                     CanUserResizeColumns="False"
-                    AutoGenerateColumns="False"
+					VerticalAlignment="Stretch"
+					HorizontalAlignment="Stretch"
                     BorderThickness="0"
-                    GridLinesVisibility="None">
-                    <toolkit:DataGrid.Columns>
+                    GridLinesVisibility="None"
+                    HorizontalScrollBarVisibility="Visible"
+					VerticalScrollBarVisibility="Visible"
+                    AutoGenerateColumns="False"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding Customers}">
+		            <toolkit:DataGrid.Columns>
                         <toolkit:DataGridTextColumn
                             Header="First name"
                             Tag="FirstName"

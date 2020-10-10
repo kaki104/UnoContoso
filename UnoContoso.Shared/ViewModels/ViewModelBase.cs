@@ -50,7 +50,7 @@ namespace UnoContoso.ViewModels
 
         private void OnIsActiveChanged()
         {
-            //IsActiveChanged?.Invoke(this, new EventArgs());
+            IsActiveChanged?.Invoke(this, new System.EventArgs());
         }
 
         public ViewModelBase()

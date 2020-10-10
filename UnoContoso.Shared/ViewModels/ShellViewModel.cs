@@ -84,7 +84,13 @@ namespace UnoContoso.ViewModels
 
         private void ShellViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-
+            switch (e.PropertyName)
+            {
+                case nameof(SelectedItem):
+                    if (SelectedItem == null) return;
+                    RegionManager.RequestNavigate(Regions.CONTENT_REGION, SelectedItem.Path);
+                    break;
+            }
         }
 
         private void EventSubscribe()
