@@ -29,6 +29,8 @@ using UnoContoso.Helpers;
 using System.Threading.Tasks;
 using Prism.Mvvm;
 using System.Reflection;
+using Prism.Regions;
+using UnoContoso.Models.Consts;
 
 namespace UnoContoso
 {
@@ -79,6 +81,10 @@ namespace UnoContoso
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+			//var regionManager = Container.Resolve<IRegionManager>();
+			//var contentRegion = regionManager.Regions[Regions.CONTENT_REGION];
+			//containerRegistry.RegisterInstance<IRegionNavigationService>(contentRegion.NavigationService);
+
             containerRegistry.Register<IContosoRepository, RestContosoRepository>("Rest");
             containerRegistry.Register<IContosoRepository, SqlContosoRepository>("Sql");
             //containerRegistry.Register<IContosoRepository, SqlContosoRepository>();
@@ -99,6 +105,7 @@ namespace UnoContoso
 			}
 
 			containerRegistry.RegisterForNavigation<CustomerListView>();
+			containerRegistry.RegisterForNavigation<CustomerDetailView>();
 		}
 
         protected override void ConfigureViewModelLocator()

@@ -10,5 +10,10 @@ namespace UnoContoso.Views
         {
             InitializeComponent();
         }
+
+        private void CustomerSearchBox_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -89,6 +89,7 @@ namespace UnoContoso.ViewModels
                 case nameof(SelectedItem):
                     if (SelectedItem == null) return;
                     RegionManager.RequestNavigate(Regions.CONTENT_REGION, SelectedItem.Path);
+                    
                     break;
             }
         }
