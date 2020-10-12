@@ -106,6 +106,7 @@ namespace UnoContoso
 
 			containerRegistry.RegisterForNavigation<CustomerListView>();
 			containerRegistry.RegisterForNavigation<CustomerDetailView>();
+			containerRegistry.RegisterForNavigation<OrderDetailView>();
 		}
 
         protected override void ConfigureViewModelLocator()

@@ -33,7 +33,6 @@ namespace UnoContoso.ViewModels
         }
 
         private CustomerWrapper _selectedCustomer;
-        private IRegionNavigationService _navigationService;
 
         public CustomerWrapper SelectedCustomer
         {
@@ -78,18 +77,28 @@ namespace UnoContoso.ViewModels
 
         private void OnNewCustomer()
         {
+            NavigationService.RequestNavigate("CustomerDetailView",
+                new NavigationParameters
+                {
+                    {"CustomerId", "" }
+                });
         }
 
         private void OnAddOrder()
         {
+            NavigationService.RequestNavigate("OrderDetailView",
+                new NavigationParameters
+                {
+                    {"CustomerId", SelectedCustomer?.Model.Id }
+                });
         }
 
         private void OnViewDetail()
         {
-            _navigationService.RequestNavigate("CustomerDetailView",
+            NavigationService.RequestNavigate("CustomerDetailView",
                 new NavigationParameters
                 {
-                    {"Id", SelectedCustomer?.Model.Id }
+                    {"CustomerId", SelectedCustomer?.Model.Id }
                 });
         }
 
@@ -106,9 +115,10 @@ namespace UnoContoso.ViewModels
 
         public override async void OnNavigatedTo(NavigationContext navigationContext)
         {
-            if(_navigationService == null)
+            base.OnNavigatedTo(navigationContext);
+
+            if(Customers?.Any() == false)
             {
-                _navigationService = navigationContext.NavigationService;
                 await DispatcherHelper.ExecuteOnUIThreadAsync(
                     async () => Customers = await GetCustomerListAsync());
             }

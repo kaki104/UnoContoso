@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Windows.Input;
 using UnoContoso.Models.Consts;
 
 namespace UnoContoso.ViewModels
@@ -34,6 +35,8 @@ namespace UnoContoso.ViewModels
 
         protected IRegionManager RegionManager { get; }
 
+        protected IRegionNavigationService NavigationService { get; private set; }
+
         bool _isActive;
         /// <summary>
         /// IsActive
@@ -49,10 +52,21 @@ namespace UnoContoso.ViewModels
             }
         }
 
+        private bool _canGoBack;
+
+        public bool CanGoBack
+        {
+            get => _canGoBack;
+            private set => SetProperty(ref _canGoBack, value);
+        }
+
         private void OnIsActiveChanged()
         {
             IsActiveChanged?.Invoke(this, new System.EventArgs());
         }
+
+        public ICommand GoBackCommand { get; set; }
+
 
         public ViewModelBase()
         {
@@ -70,11 +84,24 @@ namespace UnoContoso.ViewModels
 
         private void InitBase()
         {
-
+            GoBackCommand = new DelegateCommand(
+                () => NavigationService.Journal.GoBack(),
+                () => CanGoBack)
+                .ObservesCanExecute(() => CanGoBack);
         }
 
         public virtual void OnNavigatedTo(NavigationContext navigationContext)
         {
+            if(NavigationService == null 
+                && navigationContext?.NavigationService != null)
+            {
+                NavigationService = navigationContext.NavigationService;
+            }
+
+            if(NavigationService != null)
+            {
+                CanGoBack = NavigationService.Journal.CanGoBack;
+            }
         }
 
         public virtual bool IsNavigationTarget(NavigationContext navigationContext)

@@ -8,19 +8,20 @@ using System.Windows.Input;
 
 namespace UnoContoso.ViewModels
 {
-    public class CustomerDetailViewModel : ViewModelBase
+    public class OrderDetailViewModel : ViewModelBase
     {
-
-        public CustomerDetailViewModel()
+        public OrderDetailViewModel()
         {
+
         }
 
-        public CustomerDetailViewModel(IContainerProvider containerProvider)
+        public OrderDetailViewModel(IContainerProvider containerProvider)
             : base(containerProvider)
         {
-            Title = "Customer Details";
+            Title = "Order Details";
             Init();
         }
+
         private void Init()
         {
         }
@@ -28,7 +29,6 @@ namespace UnoContoso.ViewModels
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
             base.OnNavigatedTo(navigationContext);
-
             var id = navigationContext.Parameters.GetValue<Guid>("CustomerId");
             Title = $"{Title} / {id}";
         }
