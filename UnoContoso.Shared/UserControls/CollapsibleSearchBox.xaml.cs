@@ -22,6 +22,7 @@
 //  THE SOFTWARE.
 //  ---------------------------------------------------------------------------------
 
+using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -34,10 +35,69 @@ namespace UnoContoso.UserControls
         public CollapsibleSearchBox()
         {
             InitializeComponent();
-            Loaded += CollapsableSearchBox_Loaded;
-            Window.Current.SizeChanged += Current_SizeChanged;
-            AutoSuggestBox = searchBox;
         }
+
+        public object ItemsSource
+        {
+            get { return (object)GetValue(ItemsSourceProperty); }
+            set { SetValue(ItemsSourceProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ItemsSource.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ItemsSourceProperty =
+            DependencyProperty.Register("ItemsSource", typeof(object), typeof(CollapsibleSearchBox), new PropertyMetadata(null, ItemsSourceChanged));
+
+        private static void ItemsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var control = (CollapsibleSearchBox)d;
+            control.SetItemsSource();
+        }
+
+        private void SetItemsSource()
+        {
+            searchBox.ItemsSource = ItemsSource;
+        }
+
+        private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+        {
+            Text = sender.Text;
+        }
+
+        #region Text
+
+        public string Text
+        {
+            get { return (string)GetValue(TextProperty); }
+            set { SetValue(TextProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Text.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TextProperty =
+            DependencyProperty.Register("Text", typeof(string), typeof(CollapsibleSearchBox), new PropertyMetadata(null));
+
+        #endregion
+
+
+        private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            QueryText = args.QueryText;
+        }
+
+
+        #region QueryText
+
+        public string QueryText
+        {
+            get { return (string)GetValue(QueryTextProperty); }
+            set { SetValue(QueryTextProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for QueryText.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty QueryTextProperty =
+            DependencyProperty.Register("QueryText", typeof(string), typeof(CollapsibleSearchBox), new PropertyMetadata(null));
+
+        #endregion
+
 
         #region CollapseWidth
 
@@ -53,17 +113,20 @@ namespace UnoContoso.UserControls
 
         #endregion
 
-        private AutoSuggestBox _autoSuggestBox;
-        public AutoSuggestBox AutoSuggestBox
-        {
-            get { return _autoSuggestBox; }
-            private set { _autoSuggestBox = value; }
-        }
-
         private void CollapsableSearchBox_Loaded(object sender, RoutedEventArgs e)
         {
             RequestedWidth = Width;
             SetState(Window.Current.Bounds.Width);
+            Window.Current.SizeChanged += Current_SizeChanged;
+            searchBox.QuerySubmitted += SearchBox_QuerySubmitted;
+            searchBox.TextChanged += SearchBox_TextChanged;
+        }
+
+        private void CollapsableSearchBox_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Window.Current.SizeChanged -= Current_SizeChanged;
+            searchBox.QuerySubmitted -= SearchBox_QuerySubmitted;
+            searchBox.TextChanged -= SearchBox_TextChanged;
         }
 
         private void Current_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)

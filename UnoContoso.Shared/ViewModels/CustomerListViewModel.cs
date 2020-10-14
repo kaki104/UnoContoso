@@ -24,6 +24,8 @@ namespace UnoContoso.ViewModels
     {
         private readonly IContosoRepository _contosoRepository;
 
+        private IList<CustomerWrapper> _allCustomers;
+
         private IList<CustomerWrapper> _customers;
 
         public IList<CustomerWrapper> Customers 
@@ -38,6 +40,28 @@ namespace UnoContoso.ViewModels
         {
             get { return _selectedCustomer; }
             set { SetProperty(ref _selectedCustomer, value); }
+        }
+
+        private string _searchBoxText;
+        public string SearchBoxText
+        {
+            get { return _searchBoxText; }
+            set { SetProperty(ref _searchBoxText, value); }
+        }
+
+        private string _queryText;
+        public string QueryText
+        {
+            get { return _queryText; }
+            set { SetProperty(ref _queryText, value); }
+        }
+
+        private IList<string> _suggestItems;
+
+        public IList<string> SuggestItems
+        {
+            get { return _suggestItems; }
+            set { SetProperty(ref _suggestItems, value); }
         }
 
         public ICommand ViewDetailCommand { get; set; }
@@ -69,10 +93,90 @@ namespace UnoContoso.ViewModels
             AddOrderCommand = new DelegateCommand(OnAddOrder);
             NewCustomerCommand = new DelegateCommand(OnNewCustomer);
             SyncCommand = new DelegateCommand(OnSync);
+
+            PropertyChanged += CustomerListViewModel_PropertyChanged;
+        }
+
+        private async void CustomerListViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            switch(e.PropertyName)
+            {
+                case nameof(SearchBoxText):
+                    SetSuggestItems(SearchBoxText);
+                    break;
+                case nameof(QueryText):
+                    await SetCustomersAsync(QueryText);
+                    break;
+            }
+        }
+
+        private async Task SetCustomersAsync(string queryText)
+        {
+            if(string.IsNullOrEmpty(queryText))
+            {
+                Customers = _allCustomers;
+            }
+            else
+            {
+                string[] parameters = queryText.Split(new char[] { ' ' },
+                    StringSplitOptions.RemoveEmptyEntries);
+                var customers = _allCustomers
+                    .Where(c => parameters.Any(p =>
+                        c.Address.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
+                        c.FirstName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
+                        c.LastName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
+                        c.Company.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
+                    .OrderByDescending(c => parameters.Count(p =>
+                        c.Address.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
+                        c.FirstName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
+                        c.LastName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
+                        c.Company.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
+                    .ToList();
+                await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+                {
+                    Customers = customers;
+                });
+            }
+        }
+
+        private void SetSuggestItems(string searchBoxText)
+        {
+            if(string.IsNullOrEmpty(searchBoxText))
+            {
+                Customers = _allCustomers;
+                SuggestItems = null;
+            }
+            else
+            {
+                string[] parameters = searchBoxText.Split(new char[] { ' ' },
+                    StringSplitOptions.RemoveEmptyEntries);
+                SuggestItems = _allCustomers
+                    .Where(c => parameters.Any(p =>
+                        c.Address.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
+                        c.FirstName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
+                        c.LastName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
+                        c.Company.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
+                    .OrderByDescending(c => parameters.Count(p =>
+                        c.Address.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
+                        c.FirstName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
+                        c.LastName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
+                        c.Company.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
+                    .Select(c => $"{c.FirstName} {c.LastName}")
+                    .ToList();
+            }
         }
 
         private void OnSync()
         {
+            Task.Run(async () => 
+            { 
+                foreach(var modifiedCustomer in Customers?
+                    .Where(c => c.IsModified)
+                    .Select(c => c.Model))
+                {
+                    await _contosoRepository.Customers.UpsertAsync(modifiedCustomer);
+                }
+            });
         }
 
         private void OnNewCustomer()
@@ -120,7 +224,11 @@ namespace UnoContoso.ViewModels
             if(Customers?.Any() == false)
             {
                 await DispatcherHelper.ExecuteOnUIThreadAsync(
-                    async () => Customers = await GetCustomerListAsync());
+                    async () => 
+                    {
+                        _allCustomers = await GetCustomerListAsync();
+                        Customers = _allCustomers; 
+                    });
             }
         }
     }

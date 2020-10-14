@@ -56,7 +56,10 @@
                 Width="240"
                 Margin="12,8,12,0"
                 CollapseWidth="{StaticResource LargeWindowSnapPoint}"
-                RelativePanel.AlignRightWithPanel="True"/>
+                RelativePanel.AlignRightWithPanel="True"
+                Text="{Binding SearchBoxText, Mode=TwoWay}"
+                ItemsSource="{Binding SuggestItems}"
+                QueryText="{Binding QueryText, Mode=TwoWay}" />
             
             <Grid
                 Margin="0,10,0,0"
