@@ -104,6 +104,19 @@ namespace UnoContoso.ViewModels
 
         private void ReceivedBusyEvent(BusyEventArgs obj)
         {
+            if (obj.IsBusy == true
+                && _busies.Any(b => b.Id == obj.Id) == false)
+            {
+                _busies.Add(obj);
+            }
+
+            if (obj.IsBusy == false
+                && _busies.Any(b => b.Id == obj.Id))
+            {
+                _busies.Remove(_busies.First(b => b.Id == obj.Id));
+            }
+
+            IsBusy = _busies.Any();
         }
 
         private void ReceivedMessageEvent(MessageEventArgs obj)

@@ -24,6 +24,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)EventArgs\MessageEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\BusyEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\MessageEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\DataGridHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\StreamHelperEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\CustomerWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserControls\CollapsibleSearchBox.xaml.cs">
@@ -58,6 +59,10 @@
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Styles\_DataGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="$(MSBuildThisFileDirectory)Styles\_NavStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

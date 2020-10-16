@@ -97,6 +97,12 @@ namespace UnoContoso.ViewModels
             PropertyChanged += CustomerListViewModel_PropertyChanged;
         }
 
+        public override void Destroy()
+        {
+            _allCustomers?.Clear();
+            Customers?.Clear();
+        }
+
         private async void CustomerListViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch(e.PropertyName)
@@ -169,13 +175,15 @@ namespace UnoContoso.ViewModels
         private void OnSync()
         {
             Task.Run(async () => 
-            { 
+            {
+                SetBusy("Sync", true);
                 foreach(var modifiedCustomer in Customers?
                     .Where(c => c.IsModified)
                     .Select(c => c.Model))
                 {
                     await _contosoRepository.Customers.UpsertAsync(modifiedCustomer);
                 }
+                SetBusy("Sync", false);
             });
         }
 
@@ -224,12 +232,14 @@ namespace UnoContoso.ViewModels
 
             if(Customers?.Any() == false)
             {
+                SetBusy("FirstLoading", true);
                 await DispatcherHelper.ExecuteOnUIThreadAsync(
                     async () => 
                     {
                         _allCustomers = await GetCustomerListAsync();
                         Customers = _allCustomers; 
                     });
+                SetBusy("FirstLoading", false);
             }
         }
     }

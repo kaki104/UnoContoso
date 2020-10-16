@@ -10,7 +10,8 @@
     xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:prismMvvm="using:Prism.Mvvm" 
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
-    xmlns:uc="using:UnoContoso.UserControls"
+    xmlns:uc="using:UnoContoso.UserControls" 
+    xmlns:behaviors="using:UnoContoso.Behaviors"
     mc:Ignorable="d">
     
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -81,12 +82,16 @@
                     IsReadOnly="True"
                     ItemsSource="{Binding Customers}"
                     SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}">
+                    <i:Interaction.Behaviors>
+                        <behaviors:DataGridBehavior/>
+                    </i:Interaction.Behaviors>
 		            <toolkit:DataGrid.Columns>
                         <toolkit:DataGridTextColumn
                             Header="First name"
                             Tag="FirstName"
                             Binding="{Binding FirstName}"
-                            CanUserSort="False"/>
+                            CanUserSort="False"
+                            HeaderStyle="{StaticResource DataGridNonSortableColumnHeaderStyle}"/>
                         <toolkit:DataGridTextColumn
                             Header="Last name"
                             Tag="LastName"
@@ -94,18 +99,21 @@
                         <toolkit:DataGridTextColumn
                             Header="Address"
                             Binding="{Binding Address}"
-                            CanUserSort="False"/>
+                            CanUserSort="False"
+                            HeaderStyle="{StaticResource DataGridNonSortableColumnHeaderStyle}"/>
                         <toolkit:DataGridTextColumn
                             Header="Company"
                             Binding="{Binding Company}"/>
                         <toolkit:DataGridTextColumn
                             Header="Phone"
                             Binding="{Binding Phone}"
-                            CanUserSort="False" />
+                            CanUserSort="False" 
+                            HeaderStyle="{StaticResource DataGridNonSortableColumnHeaderStyle}"/>
                         <toolkit:DataGridTextColumn
                             Header="Email"
                             Binding="{Binding Email}"
-                            CanUserSort="False" />
+                            CanUserSort="False" 
+                            HeaderStyle="{StaticResource DataGridNonSortableColumnHeaderStyle}"/>
                     </toolkit:DataGrid.Columns>
                 </toolkit:DataGrid>
             </Grid>

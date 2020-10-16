@@ -117,5 +117,16 @@ namespace UnoContoso.ViewModels
         {
 
         }
+
+        protected void SetBusy(string id, bool isBusy, [CallerMemberName] string owner = "")
+        {
+            EventAggregator.GetEvent<Events.BusyEvent>()
+                .Publish(new EventArgs.BusyEventArgs
+                {
+                    Id = id,
+                    IsBusy = isBusy,
+                    Owner = owner
+                });
+        }
     }
 }
