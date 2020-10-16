@@ -209,7 +209,8 @@ namespace UnoContoso.ViewModels
         public async Task<IList<CustomerWrapper>> GetCustomerListAsync()
         {
             var customers = await _contosoRepository.Customers.GetAsync();
-            if (customers == null) return null;
+            if (customers == null
+                || customers.Any() == false) return null;
 
             Customers?.Clear();
             var custs = from c in customers

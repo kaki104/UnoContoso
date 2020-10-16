@@ -37,6 +37,8 @@ namespace UnoContoso.UserControls
             InitializeComponent();
         }
 
+        #region ItemsSource
+
         public object ItemsSource
         {
             get { return (object)GetValue(ItemsSourceProperty); }
@@ -46,6 +48,8 @@ namespace UnoContoso.UserControls
         // Using a DependencyProperty as the backing store for ItemsSource.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(object), typeof(CollapsibleSearchBox), new PropertyMetadata(null, ItemsSourceChanged));
+
+        #endregion
 
         private static void ItemsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -77,12 +81,10 @@ namespace UnoContoso.UserControls
 
         #endregion
 
-
         private void SearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
             QueryText = args.QueryText;
         }
-
 
         #region QueryText
 
@@ -116,15 +118,16 @@ namespace UnoContoso.UserControls
         private void CollapsableSearchBox_Loaded(object sender, RoutedEventArgs e)
         {
             RequestedWidth = Width;
-            SetState(Window.Current.Bounds.Width);
-            Window.Current.SizeChanged += Current_SizeChanged;
+            //iOS
+            SetState(Windows.UI.Xaml.Window.Current.Bounds.Width);
+            Windows.UI.Xaml.Window.Current.SizeChanged += Current_SizeChanged;
             searchBox.QuerySubmitted += SearchBox_QuerySubmitted;
             searchBox.TextChanged += SearchBox_TextChanged;
         }
 
         private void CollapsableSearchBox_Unloaded(object sender, RoutedEventArgs e)
         {
-            Window.Current.SizeChanged -= Current_SizeChanged;
+            Windows.UI.Xaml.Window.Current.SizeChanged -= Current_SizeChanged;
             searchBox.QuerySubmitted -= SearchBox_QuerySubmitted;
             searchBox.TextChanged -= SearchBox_TextChanged;
         }
@@ -136,7 +139,7 @@ namespace UnoContoso.UserControls
 
         private void SearchBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            SetState(Window.Current.Bounds.Width);
+            SetState(Windows.UI.Xaml.Window.Current.Bounds.Width);
             searchButton.IsChecked = false;
         }
 

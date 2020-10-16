@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Behaviors\DataGridBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\NavigationViewBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventArgs\BusyEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventArgs\MessageEventArgs.cs" />

@@ -95,13 +95,14 @@ namespace UnoContoso
 			{
 				switch (dataSource.ToString())
 				{
-					case "Rest": UseRest(); break;
+					case "Rest": UseRest(containerRegistry); break;
 					default: UseSqlite(containerRegistry); break;
 				}
 			}
 			else
 			{
-				UseSqlite(containerRegistry);
+				//UseSqlite(containerRegistry);
+				UseRest(containerRegistry);
 			}
 
 			containerRegistry.RegisterForNavigation<CustomerListView>();
@@ -198,37 +199,45 @@ namespace UnoContoso
 		/// </summary>
 		public async void UseSqlite(IContainerRegistry containerRegistry)
 		{
-			string databasePath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Contoso.db");
-			if (!File.Exists(databasePath))
-			{
-				using (Stream sourceStream = await StreamHelperEx.GetEmbeddedFileStreamAsync(GetType(), "Contoso.db"))
-				{
-					var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("Contoso.db");
-					using (var fileStream = await file.OpenStreamForWriteAsync())
-                    {
-						await sourceStream.CopyToAsync(fileStream);
-						await fileStream.FlushAsync();
-                    }
-				}
-			}
+			await Task.CompletedTask;
+			//string databasePath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Contoso.db");
+			//if (!File.Exists(databasePath))
+			//{
+			//	using (Stream sourceStream = await StreamHelperEx.GetEmbeddedFileStreamAsync(GetType(), "Contoso.db"))
+			//	{
+			//		var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("Contoso.db");
+			//		using (var fileStream = await file.OpenStreamForWriteAsync())
+   //                 {
+			//			await sourceStream.CopyToAsync(fileStream);
+			//			await fileStream.FlushAsync();
+   //                 }
+			//	}
+			//}
 
-            var dbOptions = new DbContextOptionsBuilder<ContosoContext>()
-				.UseSqlite("Data Source=" + databasePath);
-            //var dbOptions = new DbContextOptionsBuilder<ContosoContext>();
+   //         var dbOptions = new DbContextOptionsBuilder<ContosoContext>()
+			//	.UseSqlite("Data Source=" + databasePath);
+   //         //var dbOptions = new DbContextOptionsBuilder<ContosoContext>();
 
-            //todo : 리졸브할때 파라메터를 던져주면되는데..귀찮음..수정해야지
-            //var repository = Container.Resolve<IContosoRepository>("Sql");
-            var repository = new SqlContosoRepository(dbOptions);
-            containerRegistry.RegisterInstance<IContosoRepository>(repository);
+   //         //todo : 리졸브할때 파라메터를 던져주면되는데..귀찮음..수정해야지
+   //         //var repository = Container.Resolve<IContosoRepository>("Sql");
+   //         var repository = new SqlContosoRepository(dbOptions);
+   //         containerRegistry.RegisterInstance<IContosoRepository>(repository);
         }
 
 		/// <summary>
 		/// Configures the app to use the REST data source. For convenience, a read-only source is provided. 
 		/// You can also deploy your own copy of the REST service locally or to Azure. See the README for details.
 		/// </summary>
-		public void UseRest() 
+		public void UseRest(IContainerRegistry containerRegistry) 
 		{
-			//Repository = new RestContosoRepository("https://customers-orders-api-prod.azurewebsites.net/api/");
+			//var repository = new RestContosoRepository("https://customers-orders-api-prod.azurewebsites.net/api/");
+			//var repository = new RestContosoRepository("https://localhost:44394/api/");
+#if __ANDROID__
+			var repository = new RestContosoRepository("http://10.0.2.2:5000/api/");
+#else
+			var repository = new RestContosoRepository("http://localhost:5000/api/");
+#endif
+			containerRegistry.RegisterInstance<IContosoRepository>(repository);
 		}
 	}
 }
