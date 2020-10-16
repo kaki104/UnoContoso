@@ -12,4 +12,10 @@
     <ProjectReference Include="..\UnoContoso.Models\UnoContoso.Models.csproj" />
     <ProjectReference Include="..\UnoContoso.Repository\UnoContoso.Repository.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Contoso.db">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

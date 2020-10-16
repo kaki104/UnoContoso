@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.PlatformAbstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,10 +20,12 @@ namespace UnoContoso.Service
     public class Startup
     {
         readonly string MyPolicy = "_myPolicy";
+        private IWebHostEnvironment _appHost;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment hostEnvironment)
         {
             Configuration = configuration;
+            _appHost = hostEnvironment;
         }
 
         public IConfiguration Configuration { get; }
@@ -43,7 +46,8 @@ namespace UnoContoso.Service
                     });
             });
             var db = new ContosoContext(new DbContextOptionsBuilder<ContosoContext>()
-                .UseSqlite("Data Source=Contoso.db").Options);
+                .UseSqlite(
+                $"Data Source={_appHost.ContentRootPath}/Contoso.db").Options);
             services.AddScoped<ICustomerRepository, SqlCustomerRepository>(_ => new SqlCustomerRepository(db));
             services.AddScoped<IOrderRepository, SqlOrderRepository>(_ => new SqlOrderRepository(db));
             services.AddScoped<IProductRepository, SqlProductRepository>(_ => new SqlProductRepository(db));
