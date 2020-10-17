@@ -13,6 +13,20 @@
     xmlns:uc="using:UnoContoso.UserControls" 
     xmlns:behaviors="using:UnoContoso.Behaviors"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <MenuFlyout x:Key="DataGridContextMenu">
+            <MenuFlyoutItem
+                Command="{Binding ViewDetailCommand}"
+                Style="{StaticResource MenuFlyoutItemIconTemplate}"
+                Tag="&#xE1A5;"
+                Text="View details" />
+            <MenuFlyoutItem
+                Command="{Binding AddOrderCommand}"
+                Style="{StaticResource MenuFlyoutItemIconTemplate}"
+                Tag="&#xE14D;"
+                Text="Add order" />
+        </MenuFlyout>
+    </UserControl.Resources>
     
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <RelativePanel>
@@ -21,36 +35,36 @@
                 Text="{Binding Title}"
                 Style="{StaticResource PageTitleTextBlockStyle}"/>
 
-            <CommandBar 
+            <StackPanel 
                 x:Name="mainCommandBar"
                 Height="56"
-                HorizontalAlignment="Stretch"
+                Orientation="Horizontal"
+                HorizontalAlignment="Right"
                 Background="Transparent"
                 RelativePanel.LeftOf="CustomerSearchBox"
-                RelativePanel.RightOf="PageTitle" 
-                OverflowButtonVisibility="Collapsed">
+                RelativePanel.RightOf="PageTitle">
                 <AppBarButton
                     Icon="Contact"
-                    Label="View details"
                     ToolTipService.ToolTip="View details" 
-                    Command="{Binding ViewDetailCommand}"/>
+                    Command="{Binding ViewDetailCommand}"
+                    Width="50"/>
                 <AppBarButton
                     Icon="Shop"
-                    Label="Add order"
                     ToolTipService.ToolTip="Add order" 
-                    Command="{Binding AddOrderCommand}"/>
-                <AppBarSeparator />
+                    Command="{Binding AddOrderCommand}"
+                    Width="50"/>
+                <AppBarSeparator Padding="0"/>
                 <AppBarButton
                     Icon="Add"
-                    Label="New"
                     ToolTipService.ToolTip="New customer" 
-                    Command="{Binding NewCustomerCommand}"/>
+                    Command="{Binding NewCustomerCommand}"
+                    Width="50"/>
                 <AppBarButton
                     Icon="Refresh"
-                    Label="Sync"
                     ToolTipService.ToolTip="Sync with server" 
-                    Command="{Binding SyncCommand}"/>
-            </CommandBar>
+                    Command="{Binding SyncCommand}"
+                    Width="50"/>
+            </StackPanel>
 
             <uc:CollapsibleSearchBox
                 x:Name="CustomerSearchBox"
@@ -81,7 +95,8 @@
                     AutoGenerateColumns="False"
                     IsReadOnly="True"
                     ItemsSource="{Binding Customers}"
-                    SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}">
+                    SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}"
+                    ContextFlyout="{StaticResource DataGridContextMenu}">
                     <i:Interaction.Behaviors>
                         <behaviors:DataGridBehavior/>
                     </i:Interaction.Behaviors>
