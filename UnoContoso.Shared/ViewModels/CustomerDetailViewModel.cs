@@ -18,7 +18,7 @@ namespace UnoContoso.ViewModels
         public CustomerDetailViewModel(IContainerProvider containerProvider)
             : base(containerProvider)
         {
-            Title = "Customer Details";
+            Title = "Details";
             Init();
         }
         private void Init()
@@ -30,7 +30,7 @@ namespace UnoContoso.ViewModels
             base.OnNavigatedTo(navigationContext);
 
             var id = navigationContext.Parameters.GetValue<Guid>("CustomerId");
-            Title = $"{Title} / {id}";
+            //Title = $"{Title} / {id}";
         }
     }
 }

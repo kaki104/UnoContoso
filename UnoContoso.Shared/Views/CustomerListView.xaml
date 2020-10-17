@@ -12,6 +12,7 @@
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
     xmlns:uc="using:UnoContoso.UserControls" 
     xmlns:behaviors="using:UnoContoso.Behaviors"
+    xmlns:stateTriggers="using:UnoContoso.StateTriggers"
     mc:Ignorable="d">
     <UserControl.Resources>
         <MenuFlyout x:Key="DataGridContextMenu">
@@ -29,42 +30,75 @@
     </UserControl.Resources>
     
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource LargeWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <stateTriggers:MobileScreenTrigger InteractionMode="Touch" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="mainCommandBar.(RelativePanel.AlignBottomWithPanel)" Value="True" />
+                        <Setter Target="mainCommandBar.(RelativePanel.AlignLeftWithPanel)" Value="True" />
+                        <Setter Target="mainCommandBar.(RelativePanel.AlignRightWithPanel)" Value="True" />
+                        <Setter Target="mainCommandBar.(RelativePanel.LeftOf)" Value="" />
+                        <Setter Target="mainCommandBar.(RelativePanel.RightOf)" Value="" />
+                        <Setter Target="mainCommandBar.HorizontalAlignment" Value="Stretch" />
+                        <Setter Target="CustomerSearchBox.Width" Value="300" />
+                        <Setter Target="RootDataGrid.Margin" Value="0,10,0,80" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        
         <RelativePanel>
             <TextBlock 
                 x:Name="PageTitle"
                 Text="{Binding Title}"
                 Style="{StaticResource PageTitleTextBlockStyle}"/>
 
-            <StackPanel 
+            <CommandBar 
                 x:Name="mainCommandBar"
-                Height="56"
-                Orientation="Horizontal"
+                Background="White"
                 HorizontalAlignment="Right"
-                Background="Transparent"
                 RelativePanel.LeftOf="CustomerSearchBox"
                 RelativePanel.RightOf="PageTitle">
                 <AppBarButton
                     Icon="Contact"
+                    Label="View details"
                     ToolTipService.ToolTip="View details" 
-                    Command="{Binding ViewDetailCommand}"
-                    Width="50"/>
+                    Command="{Binding ViewDetailCommand}"/>
                 <AppBarButton
                     Icon="Shop"
+                    Label="Add order"
                     ToolTipService.ToolTip="Add order" 
-                    Command="{Binding AddOrderCommand}"
-                    Width="50"/>
+                    Command="{Binding AddOrderCommand}"/>
                 <AppBarSeparator Padding="0"/>
                 <AppBarButton
                     Icon="Add"
+                    Label="New customer"
                     ToolTipService.ToolTip="New customer" 
-                    Command="{Binding NewCustomerCommand}"
-                    Width="50"/>
+                    Command="{Binding NewCustomerCommand}"/>
                 <AppBarButton
                     Icon="Refresh"
+                    Label="Sync"
                     ToolTipService.ToolTip="Sync with server" 
-                    Command="{Binding SyncCommand}"
-                    Width="50"/>
-            </StackPanel>
+                    Command="{Binding SyncCommand}"/>
+            </CommandBar>
 
             <uc:CollapsibleSearchBox
                 x:Name="CustomerSearchBox"
@@ -77,6 +111,7 @@
                 QueryText="{Binding QueryText, Mode=TwoWay}" />
             
             <Grid
+                x:Name="RootDataGrid"
                 Margin="0,10,0,0"
                 RelativePanel.AlignLeftWithPanel="True"
                 RelativePanel.AlignRightWithPanel="True"

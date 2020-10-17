@@ -89,8 +89,12 @@ namespace UnoContoso.ViewModels
 
         private void Init()
         {
-            ViewDetailCommand = new DelegateCommand(OnViewDetail);
-            AddOrderCommand = new DelegateCommand(OnAddOrder);
+            ViewDetailCommand = new DelegateCommand(OnViewDetail, 
+                () => SelectedCustomer != null)
+                .ObservesProperty(() => SelectedCustomer);
+            AddOrderCommand = new DelegateCommand(OnAddOrder,
+                () => SelectedCustomer != null)
+                .ObservesProperty(() => SelectedCustomer);
             NewCustomerCommand = new DelegateCommand(OnNewCustomer);
             SyncCommand = new DelegateCommand(OnSync);
 

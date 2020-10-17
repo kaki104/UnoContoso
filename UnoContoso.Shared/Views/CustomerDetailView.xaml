@@ -10,11 +10,56 @@
     xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:prismMvvm="using:Prism.Mvvm" 
     prismMvvm:ViewModelLocator.AutoWireViewModel="True"
-    mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400">
+    xmlns:uc="using:UnoContoso.UserControls" 
+    xmlns:stateTriggers="using:UnoContoso.StateTriggers"
+    mc:Ignorable="d">
 
-    <Grid>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource LargeWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="EmailText.(RelativePanel.AlignLeftWithPanel)" Value="True" />
+                        <Setter Target="EmailText.(RelativePanel.Below)" Value="CompanyText" />
+                        <Setter Target="EmailText.(RelativePanel.RightOf)" Value=""/>
+                        <Setter Target="DetailPanel.Margin" Value="12,0,0,0" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <stateTriggers:MobileScreenTrigger InteractionMode="Touch" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="DetailPanel.(RelativePanel.Above)" Value="mainCommandBar" />
+                        <Setter Target="mainCommandBar.(RelativePanel.AlignBottomWithPanel)" Value="True" />
+                        <Setter Target="mainCommandBar.(RelativePanel.AlignLeftWithPanel)" Value="True" />
+                        <Setter Target="mainCommandBar.(RelativePanel.AlignRightWithPanel)" Value="True" />
+                        <Setter Target="mainCommandBar.(RelativePanel.LeftOf)" Value="" />
+                        <Setter Target="mainCommandBar.(RelativePanel.RightOf)" Value="" />
+                        <Setter Target="mainCommandBar.HorizontalAlignment" Value="Stretch" />
+                        <Setter Target="CustomerSearchBox.Width" Value="300" />
+                        <Setter Target="EmailText.(RelativePanel.AlignLeftWithPanel)" Value="True" />
+                        <Setter Target="EmailText.(RelativePanel.Below)" Value="CompanyText" />
+                        <Setter Target="EmailText.(RelativePanel.RightOf)" Value=""/>
+                        <Setter Target="DetailPanel.Margin" Value="0,0,0,80" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <RelativePanel>
             <Button 
                 x:Name="BackButton"
@@ -28,6 +73,243 @@
                 RelativePanel.AlignTopWithPanel="True"
                 Margin="4,4,0,0"/>
 
+            <CommandBar 
+                x:Name="mainCommandBar"
+                HorizontalAlignment="Right"
+                Background="White"
+                RelativePanel.LeftOf="CustomerSearchBox"
+                RelativePanel.RightOf="PageTitle">
+                <AppBarButton
+                    Icon="Save"
+                    Label="Save"
+                    ToolTipService.ToolTip="Save" 
+                    Command="{Binding SaveCommand}"
+                    Width="50"
+                    Visibility="{Binding IsInEdit, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <AppBarButton
+                    Icon="Cancel"
+                    Label="Cancel"
+                    ToolTipService.ToolTip="Cancel" 
+                    Command="{Binding CancelCommand}"
+                    Width="50"
+                    Visibility="{Binding IsInEdit, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <AppBarButton
+                    Icon="Edit"
+                    Label="Edit"
+                    ToolTipService.ToolTip="Edit" 
+                    Command="{Binding EditCommand}"
+                    Width="50"
+                    Visibility="{Binding IsInEdit, Converter={StaticResource ReverseBoolToVisibilityConverter}}"/>
+                <AppBarButton
+                    Icon="Shop"
+                    Label="Add order"
+                    ToolTipService.ToolTip="Add order" 
+                    Command="{Binding AddOrderCommand}"
+                    Width="50"/>
+                <AppBarButton
+                    Icon="Refresh"
+                    Label="Refresh orders"
+                    ToolTipService.ToolTip="Refresh orders" 
+                    Command="{Binding RefreshOrderCommand}"
+                    Width="50"
+                    Visibility="{Binding IsInEdit, Converter={StaticResource ReverseBoolToVisibilityConverter}}"/>
+            </CommandBar>
+
+            <uc:CollapsibleSearchBox
+                x:Name="CustomerSearchBox"
+                Width="240"
+                Margin="12,8,12,0"
+                CollapseWidth="{StaticResource LargeWindowSnapPoint}"
+                RelativePanel.AlignRightWithPanel="True"
+                Text="{Binding SearchBoxText, Mode=TwoWay}"
+                ItemsSource="{Binding SuggestItems}"
+                QueryText="{Binding QueryText, Mode=TwoWay}" />
+
+            <ScrollViewer
+                x:Name="DetailPanel"
+                Margin="0"
+                RelativePanel.AlignLeftWithPanel="True"
+                RelativePanel.AlignRightWithPanel="True"
+                RelativePanel.Below="PageTitle"
+                VerticalScrollBarVisibility="Auto"
+                VerticalScrollMode="Auto">
+
+                <StackPanel 
+                    Margin="0,8,4,0">
+
+                    <Border Background="#FF91C1E7">
+                        <TextBlock 
+                                Margin="10,8,0,8"
+                                Text="General"
+                                Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                    </Border>
+                    <RelativePanel Margin="8,0,0,12">
+                        <TextBox
+                            x:Name="FirstName"
+                            MinWidth="120"
+                            Margin="0,8,16,8"
+                            Header="First name"
+                            IsReadOnly="{Binding IsInEdit, Mode=OneWay}"
+                            RelativePanel.AlignLeftWithPanel="True"
+                            Text="{Binding FirstName, Mode=TwoWay}"
+                            Visibility="{Binding IsInEdit, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        <TextBox
+                            Grid.Column="1"
+                            x:Name="LastName"
+                            MinWidth="120"
+                            Margin="0,8,16,8"
+                            Header="Last name"
+                            IsReadOnly="{Binding IsInEdit, Mode=OneWay}"
+                            RelativePanel.RightOf="FirstName"
+                            Text="{Binding LastName, Mode=TwoWay}"
+                            Visibility="{Binding IsInEdit, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        <TextBox
+                            Grid.Row="1" Grid.Column="0"
+                            x:Name="CompanyText"
+                            MinWidth="120"
+                            Margin="0,8,16,0"
+                            Header="Company name"
+                            IsReadOnly="{Binding IsInEdit, Mode=OneWay}"
+                            RelativePanel.AlignLeftWithPanel="True"
+                            RelativePanel.Below="FirstName"
+                            Text="{Binding Company, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="1" Grid.Column="1"
+                            x:Name="PhoneNumber"
+                            MinWidth="132"
+                            Margin="0,8,16,0"
+                            Header="Primary phone"
+                            InputScope="TelephoneNumber"
+                            IsReadOnly="{Binding IsInEdit, Mode=OneWay}"
+                            RelativePanel.Below="FirstName"
+                            RelativePanel.RightOf="CompanyText"
+                            Text="{Binding Phone, Mode=TwoWay}" />
+                        <TextBox
+                            Grid.Row="1" Grid.Column="2  "
+                            x:Name="EmailText"
+                            MinWidth="160"
+                            Margin="0,8,16,0"
+                            Header="Primary email"
+                            InputScope="EmailNameOrAddress"
+                            IsReadOnly="{Binding IsInEdit, Mode=OneWay}"
+                            RelativePanel.AlignLeftWithPanel="False"
+                            RelativePanel.Below="FirstName"
+                            RelativePanel.RightOf="PhoneNumber"
+                            Text="{Binding Email, Mode=TwoWay}" />
+                    </RelativePanel>
+
+                    <Border Background="#FF91C1E7">
+                        <TextBlock 
+                                Margin="10,8,0,8"
+                                Text="Addresses"
+                                Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                    </Border>
+
+                    <TextBox
+                        Margin="8,8,0,12"
+                        Header="Primary address"
+                        IsReadOnly="{Binding IsInEdit, Mode=OneWay}"
+                        Text="{Binding Address, Mode=TwoWay}" />
+
+                    <Border Background="#FF91C1E7">
+                        <TextBlock 
+                            Margin="10,8,0,8"
+                            Text="Orders"
+                            Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                    </Border>
+                    
+                    <toolkit:DataGrid
+                        Margin="0,4,0,0"
+                        BorderThickness="0"
+                        CanUserReorderColumns="False"
+                        CanUserResizeColumns="False"
+                        GridLinesVisibility="None"
+                        IsReadOnly="True"
+                        AutoGenerateColumns="False"
+                        ItemsSource="{Binding Orders, Mode=OneWay}"
+                        SelectedItem="{Binding SelectedOrder, Mode=TwoWay}">
+                        <toolkit:DataGrid.Columns>
+                            <toolkit:DataGridTemplateColumn
+                                        Header="Invoice"
+                                        Tag="InvoiceNumber">
+                                <toolkit:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <HyperlinkButton
+                                                    Content="{Binding InvoiceNumber}"
+                                                    Margin="12,0"/>
+                                    </DataTemplate>
+                                </toolkit:DataGridTemplateColumn.CellTemplate>
+                            </toolkit:DataGridTemplateColumn>
+                            <toolkit:DataGridTemplateColumn
+                                        Header="Placed"
+                                        Tag="DatePlaced">
+                                <toolkit:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                                    VerticalAlignment="Center"
+                                                    Margin="12,0"
+                                                    Text="{Binding DatePlaced}"/>
+                                    </DataTemplate>
+                                </toolkit:DataGridTemplateColumn.CellTemplate>
+                            </toolkit:DataGridTemplateColumn>
+                            <toolkit:DataGridTemplateColumn
+                                        Header="Filled"
+                                        Tag="DateFilled">
+                                <toolkit:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                                    VerticalAlignment="Center"
+                                                    Margin="12,0"
+                                                    Text="{Binding DateFilled}"/>
+                                    </DataTemplate>
+                                </toolkit:DataGridTemplateColumn.CellTemplate>
+                            </toolkit:DataGridTemplateColumn>
+                            <toolkit:DataGridTemplateColumn
+                                        Header="Subtotal">
+                                <toolkit:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock 
+                                                    VerticalAlignment="Center"
+                                                    Margin="12,0"
+                                                    Text="{Binding Subtotal}"/>
+                                    </DataTemplate>
+                                </toolkit:DataGridTemplateColumn.CellTemplate>
+                            </toolkit:DataGridTemplateColumn>
+                            <toolkit:DataGridTemplateColumn
+                                        Header="Tax">
+                                <toolkit:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock 
+                                                    VerticalAlignment="Center"
+                                                    Margin="12,0"
+                                                    Text="{Binding Tax}"/>
+                                    </DataTemplate>
+                                </toolkit:DataGridTemplateColumn.CellTemplate>
+                            </toolkit:DataGridTemplateColumn>
+                            <toolkit:DataGridTemplateColumn
+                                        Header="Total"
+                                        Tag="GrandTotal">
+                                <toolkit:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock 
+                                                    VerticalAlignment="Center"
+                                                    Margin="12,0"
+                                                    Text="{Binding GrandTotal}"/>
+                                    </DataTemplate>
+                                </toolkit:DataGridTemplateColumn.CellTemplate>
+                            </toolkit:DataGridTemplateColumn>
+                            <toolkit:DataGridTextColumn
+                                        Header="Status"
+                                        Tag="PaymentStatus"
+                                        Binding="{Binding PaymentStatus}"/>
+                            <toolkit:DataGridTextColumn
+                                        Header="Term"
+                                        Binding="{Binding Term}"/>
+                        </toolkit:DataGrid.Columns>
+                    </toolkit:DataGrid>
+                </StackPanel>
+            </ScrollViewer>
         </RelativePanel>
+
     </Grid>
 </UserControl>
