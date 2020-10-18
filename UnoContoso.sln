@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnoContoso.Models", "UnoCon
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnoContoso.Repository", "UnoContoso.Repository\UnoContoso.Repository.csproj", "{4027EADE-BAEF-4BD2-8184-26D8FF06D59F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnoContoso.Service", "UnoContoso.Service\UnoContoso.Service.csproj", "{B5DE7DF3-AAC6-4875-8A17-7D7973B528A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnoContoso.Service", "UnoContoso.Service\UnoContoso.Service.csproj", "{B5DE7DF3-AAC6-4875-8A17-7D7973B528A6}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

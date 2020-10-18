@@ -21,14 +21,14 @@ namespace UnoContoso.Service.Controllers
             _repository = orderRepository;
         }
 
-        // GET: api/<CustomerController>
+        // GET: api/<OrderController>
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             return Ok(await _repository.GetAsync());
         }
 
-        // GET api/<CustomerController>/5
+        // GET api/<OrderController>/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
@@ -46,6 +46,25 @@ namespace UnoContoso.Service.Controllers
                 return Ok(order);
             }
         }
+
+        [HttpGet("customer/{id}")]
+        public async Task<IActionResult> GetCustomerOrders(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return BadRequest();
+            }
+            var orders = await _repository.GetForCustomerAsync(id);
+            if (orders == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(orders);
+            }
+        }
+
         [HttpGet("search")]
         public async Task<IActionResult> Search(string value)
         {
@@ -61,14 +80,14 @@ namespace UnoContoso.Service.Controllers
             return Ok(orders);
         }
 
-        // POST api/<CustomerController>
+        // POST api/<OrderController>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]Order order)
         {
             return Ok(await _repository.UpsertAsync(order));
         }
 
-        // DELETE api/<CustomerController>/5
+        // DELETE api/<OrderController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {

@@ -193,11 +193,7 @@ namespace UnoContoso.ViewModels
 
         private void OnNewCustomer()
         {
-            NavigationService.RequestNavigate("CustomerDetailView",
-                new NavigationParameters
-                {
-                    {"CustomerId", "" }
-                });
+            NavigationService.RequestNavigate("CustomerDetailView");
         }
 
         private void OnAddOrder()

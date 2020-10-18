@@ -5,6 +5,7 @@
 
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueValue="Visible" FalseValue="Collapsed"/>
     <converters:BoolToVisibilityConverter x:Key="ReverseBoolToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible"/>
+    <converters:BoolNegationConverter x:Key="BoolNegationConverter"/>
     <converters:StringFormatConverter  x:Key="StringFormatConverter" />
 
 </ResourceDictionary>

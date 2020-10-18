@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.DotNet.PlatformAbstractions;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +33,11 @@ namespace UnoContoso.Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers()
+                .AddNewtonsoftJson(options => 
+                    options.SerializerSettings.ReferenceLoopHandling 
+                    = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+                
             services.AddCors(options => 
             {
                 options.AddPolicy(name: MyPolicy,

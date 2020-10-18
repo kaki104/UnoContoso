@@ -11,14 +11,14 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchUrl": "weatherforecast",
+      "launchBrowser": true,
+      "launchUrl": "api/customer/2e3d63ff-4344-4615-a3e8-b50147baad7c",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "UnoContoso.Service": {
       "commandName": "Project",
-      "launchBrowser": true,
       "launchUrl": "weatherforecast",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

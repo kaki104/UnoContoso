@@ -183,17 +183,6 @@ namespace UnoContoso.Model
             set => SetProperty(ref _selectedOrder, value);
         }
 
-        private bool _isLoading;
-
-        /// <summary>
-        /// Gets or sets a value that indicates whether to show a progress bar. 
-        /// </summary>
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set => SetProperty(ref _isLoading, value);
-        }
-
         private bool _isNewCustomer;
 
         /// <summary>
@@ -293,11 +282,6 @@ namespace UnoContoso.Model
         /// </summary>
         public async Task LoadOrdersAsync()
         {
-            await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
-            {
-                IsLoading = true;
-            });
-
             var orders = await _contosoRepository.Orders.GetForCustomerAsync(Model.Id);
 
             await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
@@ -308,7 +292,6 @@ namespace UnoContoso.Model
                     Orders.Add(order);
                 }
 
-                IsLoading = false;
             });
         }
 

@@ -34,6 +34,6 @@ namespace UnoContoso.Models
         /// <summary>
         /// Gets or sets the database id.
         /// </summary>
-        public Guid Id { get; set; } = Guid.NewGuid(); 
+        public Guid Id { get; set; }
     }
 }

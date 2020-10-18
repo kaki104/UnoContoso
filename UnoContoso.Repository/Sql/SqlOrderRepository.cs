@@ -55,13 +55,16 @@ namespace UnoContoso.Repository.Sql
                 .AsNoTracking()
                 .FirstOrDefaultAsync(order => order.Id == id);
 
-        public async Task<IEnumerable<Order>> GetForCustomerAsync(Guid id) =>
-            await _db.Orders
-                .Where(order => order.CustomerId == id)
-                .Include(order => order.LineItems)
-                .ThenInclude(lineItem => lineItem.Product)
-                .AsNoTracking()
-                .ToListAsync();
+        public async Task<IEnumerable<Order>> GetForCustomerAsync(Guid id)
+        {
+            var orders = await _db.Orders
+                            .Where(order => order.CustomerId == id)
+                            .Include(order => order.LineItems)
+                            .ThenInclude(lineItem => lineItem.Product)
+                            .AsNoTracking()
+                            .ToListAsync();
+            return orders;
+        }
 
         public async Task<IEnumerable<Order>> GetAsync(string value)
         {
