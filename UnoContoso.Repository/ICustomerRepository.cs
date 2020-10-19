@@ -22,6 +22,7 @@
 //  THE SOFTWARE.
 //  ---------------------------------------------------------------------------------
 
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -48,6 +49,8 @@ namespace UnoContoso.Repository
         /// Returns the customer with the given id. 
         /// </summary>
         Task<Customer> GetAsync(Guid id);
+
+        Task<JObject> GetJObjectAsync(Guid id);
 
         /// <summary>
         /// Adds a new customer if the customer does not exist, updates the 

@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using UnoContoso.ViewModels;
+using Windows.UI.Xaml.Controls;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -11,9 +12,10 @@ namespace UnoContoso.Views
             InitializeComponent();
         }
 
-        private void CustomerSearchBox_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        public CustomerListViewModel ViewModel
         {
-
+            get { return DataContext as CustomerListViewModel; }
         }
+
     }
 }

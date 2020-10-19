@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace UnoContoso.Repository.Rest
 {
@@ -50,6 +51,9 @@ namespace UnoContoso.Repository.Rest
 
         public async Task<Customer> GetAsync(Guid id) =>
             await _http.GetAsync<Customer>($"customer/{id}");
+
+        public async Task<JObject> GetJObjectAsync(Guid id) =>
+            await _http.GetAsync<JObject>($"customer/{id}");
 
         public async Task<Customer> UpsertAsync(Customer customer) => 
             await _http.PostAsync<Customer, Customer>("customer", customer);

@@ -68,7 +68,7 @@
         <RelativePanel>
             <TextBlock 
                 x:Name="PageTitle"
-                Text="{Binding Title}"
+                Text="{x:Bind ViewModel.Title}"
                 Style="{StaticResource PageTitleTextBlockStyle}"/>
 
             <CommandBar 
@@ -81,23 +81,23 @@
                     Icon="Contact"
                     Label="View details"
                     ToolTipService.ToolTip="View details" 
-                    Command="{Binding ViewDetailCommand}"/>
+                    Command="{x:Bind ViewModel.ViewDetailCommand}"/>
                 <AppBarButton
                     Icon="Shop"
                     Label="Add order"
                     ToolTipService.ToolTip="Add order" 
-                    Command="{Binding AddOrderCommand}"/>
+                    Command="{x:Bind ViewModel.AddOrderCommand}"/>
                 <AppBarSeparator Padding="0"/>
                 <AppBarButton
                     Icon="Add"
                     Label="New customer"
                     ToolTipService.ToolTip="New customer" 
-                    Command="{Binding NewCustomerCommand}"/>
+                    Command="{x:Bind ViewModel.NewCustomerCommand}"/>
                 <AppBarButton
                     Icon="Refresh"
                     Label="Sync"
                     ToolTipService.ToolTip="Sync with server" 
-                    Command="{Binding SyncCommand}"/>
+                    Command="{x:Bind ViewModel.SyncCommand}"/>
             </CommandBar>
 
             <uc:CollapsibleSearchBox
@@ -106,9 +106,9 @@
                 Margin="12,8,12,0"
                 CollapseWidth="{StaticResource LargeWindowSnapPoint}"
                 RelativePanel.AlignRightWithPanel="True"
-                Text="{Binding SearchBoxText, Mode=TwoWay}"
-                ItemsSource="{Binding SuggestItems}"
-                QueryText="{Binding QueryText, Mode=TwoWay}" />
+                Text="{x:Bind ViewModel.SearchBoxText, Mode=TwoWay}"
+                ItemsSource="{x:Bind ViewModel.SuggestItems}"
+                QueryText="{x:Bind ViewModel.QueryText, Mode=TwoWay}" />
             
             <Grid
                 x:Name="RootDataGrid"
@@ -129,8 +129,8 @@
 					VerticalScrollBarVisibility="Visible"
                     AutoGenerateColumns="False"
                     IsReadOnly="True"
-                    ItemsSource="{Binding Customers}"
-                    SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}"
+                    ItemsSource="{x:Bind ViewModel.Customers}"
+                    SelectedItem="{x:Bind ViewModel.SelectedCustomer, Mode=TwoWay}"
                     ContextFlyout="{StaticResource DataGridContextMenu}">
                     <i:Interaction.Behaviors>
                         <behaviors:DataGridBehavior/>
