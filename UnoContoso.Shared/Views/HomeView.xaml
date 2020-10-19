@@ -17,7 +17,28 @@
             <TextBlock 
                 x:Name="PageTitle"
                 Text="Home"
-                Style="{StaticResource TitleTextBlockStyle}"/>
+                Style="{StaticResource TitleTextBlockStyle}" />
+
+            <Button
+                x:Name="TestButton"
+                Content="Test"
+                Command="{Binding TestCommand}"
+                RelativePanel.Below="PageTitle"/>
+
+            <TextBlock
+                x:Name="TestResult"
+                RelativePanel.Below="TestButton"
+                Text="{Binding Result}"/>
+            
+            <TextBlock
+                x:Name="TestCustomer"
+                RelativePanel.Below="TestResult">
+                <Run Text="{Binding Customer.Id}"/>
+                <Run Text="{Binding Customer.FirstName}"/>
+                <Run Text="{Binding Customer.LastName}"/>
+                <Run Text="{Binding Customer.Company}"/>
+                <Run Text="{Binding Customer.Email}"/>
+            </TextBlock>
 
         </RelativePanel>
     </Grid>

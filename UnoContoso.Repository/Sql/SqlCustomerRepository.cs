@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace UnoContoso.Repository.Sql
 {
@@ -105,6 +106,11 @@ namespace UnoContoso.Repository.Sql
                 _db.Customers.Remove(customer);
                 await _db.SaveChangesAsync();
             }
+        }
+
+        public Task<JObject> GetJObjectAsync(Guid id)
+        {
+            return null;
         }
     }
 }
