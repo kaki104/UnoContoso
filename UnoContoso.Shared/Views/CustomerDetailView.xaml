@@ -64,10 +64,10 @@
             <Button 
                 x:Name="BackButton"
                 Style="{StaticResource NavigationBackButtonNormalStyle}"
-                Command="{Binding GoBackCommand}"/>
+                Command="{x:Bind ViewModel.GoBackCommand}"/>
             <TextBlock 
                 x:Name="PageTitle"
-                Text="{Binding Title}"
+                Text="{x:Bind ViewModel.Title}"
                 Style="{StaticResource PageTitleTextBlockStyle}" 
                 RelativePanel.RightOf="BackButton"
                 RelativePanel.AlignTopWithPanel="True"
@@ -83,36 +83,36 @@
                     Icon="Save"
                     Label="Save"
                     ToolTipService.ToolTip="Save" 
-                    Command="{Binding SaveCommand}"
+                    Command="{x:Bind ViewModel.SaveCommand}"
                     Width="50"
-                    Visibility="{Binding IsInEdit, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    Visibility="{x:Bind ViewModel.Customer.IsInEdit, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 <AppBarButton
                     Icon="Cancel"
                     Label="Cancel"
                     ToolTipService.ToolTip="Cancel" 
-                    Command="{Binding CancelCommand}"
+                    Command="{x:Bind ViewModel.CancelCommand}"
                     Width="50"
-                    Visibility="{Binding IsInEdit, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    Visibility="{x:Bind ViewModel.Customer.IsInEdit, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 <AppBarButton
                     Icon="Edit"
                     Label="Edit"
                     ToolTipService.ToolTip="Edit" 
-                    Command="{Binding EditCommand}"
+                    Command="{x:Bind ViewModel.EditCommand}"
                     Width="50"
-                    Visibility="{Binding IsInEdit, Converter={StaticResource ReverseBoolToVisibilityConverter}}"/>
+                    Visibility="{x:Bind ViewModel.Customer.IsInEdit, Converter={StaticResource ReverseBoolToVisibilityConverter}}"/>
                 <AppBarButton
                     Icon="Shop"
                     Label="Add order"
                     ToolTipService.ToolTip="Add order" 
-                    Command="{Binding AddOrderCommand}"
+                    Command="{x:Bind ViewModel.AddOrderCommand}"
                     Width="50"/>
                 <AppBarButton
                     Icon="Refresh"
                     Label="Refresh orders"
                     ToolTipService.ToolTip="Refresh orders" 
-                    Command="{Binding RefreshOrderCommand}"
+                    Command="{x:Bind ViewModel.RefreshOrderCommand}"
                     Width="50"
-                    Visibility="{Binding IsInEdit, Converter={StaticResource ReverseBoolToVisibilityConverter}}"/>
+                    Visibility="{x:Bind ViewModel.Customer.IsInEdit, Converter={StaticResource ReverseBoolToVisibilityConverter}}"/>
             </CommandBar>
 
             <uc:CollapsibleSearchBox
@@ -121,9 +121,9 @@
                 Margin="12,8,12,0"
                 CollapseWidth="{StaticResource LargeWindowSnapPoint}"
                 RelativePanel.AlignRightWithPanel="True"
-                Text="{Binding SearchBoxText, Mode=TwoWay}"
-                ItemsSource="{Binding SuggestItems}"
-                QueryText="{Binding QueryText, Mode=TwoWay}" />
+                Text="{x:Bind ViewModel.SearchBoxText, Mode=TwoWay}"
+                ItemsSource="{x:Bind ViewModel.SuggestItems}"
+                QueryText="{x:Bind ViewModel.QueryText, Mode=TwoWay}" />
 
             <ScrollViewer
                 x:Name="DetailPanel"
@@ -149,47 +149,47 @@
                             MinWidth="120"
                             Margin="0,8,16,8"
                             Header="First name"
-                            IsReadOnly="{Binding Customer.IsInEdit, Converter={StaticResource BoolNegationConverter}}"
+                            IsReadOnly="{x:Bind ViewModel.Customer.IsInEdit, Converter={StaticResource BoolNegationConverter}}"
                             RelativePanel.AlignLeftWithPanel="True"
-                            Text="{Binding Customer.FirstName, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.Customer.FirstName, Mode=TwoWay}" />
                         <TextBox
                             x:Name="LastName"
                             MinWidth="120"
                             Margin="0,8,16,8"
                             Header="Last name"
-                            IsReadOnly="{Binding Customer.IsInEdit, Mode=OneWay}"
+                            IsReadOnly="{x:Bind ViewModel.Customer.IsInEdit, Mode=OneWay}"
                             RelativePanel.RightOf="FirstName"
-                            Text="{Binding Customer.LastName, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.Customer.LastName, Mode=TwoWay}" />
                         <TextBox
                             x:Name="CompanyText"
                             MinWidth="120"
                             Margin="0,8,16,0"
                             Header="Company name"
-                            IsReadOnly="{Binding Customer.IsInEdit, Mode=OneWay}"
+                            IsReadOnly="{x:Bind ViewModel.Customer.IsInEdit, Mode=OneWay}"
                             RelativePanel.AlignLeftWithPanel="True"
                             RelativePanel.Below="FirstName"
-                            Text="{Binding Customer.Company, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.Customer.Company, Mode=TwoWay}" />
                         <TextBox
                             x:Name="PhoneNumber"
                             MinWidth="132"
                             Margin="0,8,16,0"
                             Header="Primary phone"
                             InputScope="TelephoneNumber"
-                            IsReadOnly="{Binding Customer.IsInEdit, Mode=OneWay}"
+                            IsReadOnly="{x:Bind ViewModel.Customer.IsInEdit, Mode=OneWay}"
                             RelativePanel.Below="FirstName"
                             RelativePanel.RightOf="CompanyText"
-                            Text="{Binding Customer.Phone, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.Customer.Phone, Mode=TwoWay}" />
                         <TextBox
                             x:Name="EmailText"
                             MinWidth="160"
                             Margin="0,8,16,0"
                             Header="Primary email"
                             InputScope="EmailNameOrAddress"
-                            IsReadOnly="{Binding Customer.IsInEdit, Mode=OneWay}"
+                            IsReadOnly="{x:Bind ViewModel.Customer.IsInEdit, Mode=OneWay}"
                             RelativePanel.AlignLeftWithPanel="False"
                             RelativePanel.Below="FirstName"
                             RelativePanel.RightOf="PhoneNumber"
-                            Text="{Binding Customer.Email, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.Customer.Email, Mode=TwoWay}" />
                     </RelativePanel>
 
                     <Border Background="#FF91C1E7">
@@ -202,8 +202,8 @@
                     <TextBox
                         Margin="8,8,0,12"
                         Header="Primary address"
-                        IsReadOnly="{Binding Customer.IsInEdit, Mode=OneWay}"
-                        Text="{Binding Customer.Address, Mode=TwoWay}" />
+                        IsReadOnly="{x:Bind ViewModel.Customer.IsInEdit, Mode=OneWay}"
+                        Text="{x:Bind ViewModel.Customer.Address, Mode=TwoWay}" />
 
                     <Border Background="#FF91C1E7">
                         <TextBlock 
@@ -220,8 +220,8 @@
                         GridLinesVisibility="None"
                         IsReadOnly="True"
                         AutoGenerateColumns="False"
-                        ItemsSource="{Binding Customer.Orders, Mode=OneWay}"
-                        SelectedItem="{Binding SelectedOrder, Mode=TwoWay}">
+                        ItemsSource="{x:Bind ViewModel.Customer.Orders, Mode=OneWay}"
+                        SelectedItem="{x:Bind ViewModel.Customer.SelectedOrder, Mode=TwoWay}">
                         <toolkit:DataGrid.Columns>
                             <toolkit:DataGridTemplateColumn
                                         Header="Invoice"
@@ -229,8 +229,8 @@
                                 <toolkit:DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <HyperlinkButton
-                                                    Content="{Binding InvoiceNumber}"
-                                                    Margin="12,0"/>
+                                            Content="{Binding InvoiceNumber}"
+                                            Margin="12,0"/>
                                     </DataTemplate>
                                 </toolkit:DataGridTemplateColumn.CellTemplate>
                             </toolkit:DataGridTemplateColumn>
@@ -240,9 +240,9 @@
                                 <toolkit:DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock
-                                                    VerticalAlignment="Center"
-                                                    Margin="12,0"
-                                                    Text="{Binding DatePlaced}"/>
+                                            VerticalAlignment="Center"
+                                            Margin="12,0"
+                                            Text="{Binding DatePlaced}"/>
                                     </DataTemplate>
                                 </toolkit:DataGridTemplateColumn.CellTemplate>
                             </toolkit:DataGridTemplateColumn>
@@ -252,9 +252,9 @@
                                 <toolkit:DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock
-                                                    VerticalAlignment="Center"
-                                                    Margin="12,0"
-                                                    Text="{Binding DateFilled}"/>
+                                            VerticalAlignment="Center"
+                                            Margin="12,0"
+                                            Text="{Binding DateFilled}"/>
                                     </DataTemplate>
                                 </toolkit:DataGridTemplateColumn.CellTemplate>
                             </toolkit:DataGridTemplateColumn>
@@ -263,9 +263,9 @@
                                 <toolkit:DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock 
-                                                    VerticalAlignment="Center"
-                                                    Margin="12,0"
-                                                    Text="{Binding Subtotal}"/>
+                                            VerticalAlignment="Center"
+                                            Margin="12,0"
+                                            Text="{Binding Subtotal}"/>
                                     </DataTemplate>
                                 </toolkit:DataGridTemplateColumn.CellTemplate>
                             </toolkit:DataGridTemplateColumn>
@@ -274,9 +274,9 @@
                                 <toolkit:DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock 
-                                                    VerticalAlignment="Center"
-                                                    Margin="12,0"
-                                                    Text="{Binding Tax}"/>
+                                            VerticalAlignment="Center"
+                                            Margin="12,0"
+                                            Text="{Binding Tax}"/>
                                     </DataTemplate>
                                 </toolkit:DataGridTemplateColumn.CellTemplate>
                             </toolkit:DataGridTemplateColumn>
@@ -286,9 +286,9 @@
                                 <toolkit:DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock 
-                                                    VerticalAlignment="Center"
-                                                    Margin="12,0"
-                                                    Text="{Binding GrandTotal}"/>
+                                            VerticalAlignment="Center"
+                                            Margin="12,0"
+                                            Text="{Binding GrandTotal}"/>
                                     </DataTemplate>
                                 </toolkit:DataGridTemplateColumn.CellTemplate>
                             </toolkit:DataGridTemplateColumn>

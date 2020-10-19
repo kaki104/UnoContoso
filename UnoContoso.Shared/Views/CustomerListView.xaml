@@ -17,12 +17,12 @@
     <UserControl.Resources>
         <MenuFlyout x:Key="DataGridContextMenu">
             <MenuFlyoutItem
-                Command="{Binding ViewDetailCommand}"
+                Command="{x:Bind ViewModel.ViewDetailCommand}"
                 Style="{StaticResource MenuFlyoutItemIconTemplate}"
                 Tag="&#xE1A5;"
                 Text="View details" />
             <MenuFlyoutItem
-                Command="{Binding AddOrderCommand}"
+                Command="{x:Bind ViewModel.AddOrderCommand}"
                 Style="{StaticResource MenuFlyoutItemIconTemplate}"
                 Tag="&#xE14D;"
                 Text="Add order" />
@@ -129,7 +129,7 @@
 					VerticalScrollBarVisibility="Visible"
                     AutoGenerateColumns="False"
                     IsReadOnly="True"
-                    ItemsSource="{x:Bind ViewModel.Customers}"
+                    ItemsSource="{x:Bind ViewModel.Customers, Mode=OneWay}"
                     SelectedItem="{x:Bind ViewModel.SelectedCustomer, Mode=TwoWay}"
                     ContextFlyout="{StaticResource DataGridContextMenu}">
                     <i:Interaction.Behaviors>

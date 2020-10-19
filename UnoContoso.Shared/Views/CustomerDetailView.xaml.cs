@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using UnoContoso.ViewModels;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -22,6 +23,11 @@ namespace UnoContoso.Views
         public CustomerDetailView()
         {
             this.InitializeComponent();
+        }
+
+        public CustomerDetailViewModel ViewModel
+        {
+            get { return DataContext as CustomerDetailViewModel; }
         }
     }
 }

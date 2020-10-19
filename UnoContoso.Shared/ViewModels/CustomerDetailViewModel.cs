@@ -23,6 +23,38 @@ namespace UnoContoso.ViewModels
             set { SetProperty(ref _customer, value); }
         }
 
+        public ICommand SaveCommand { get; set; }
+
+        public ICommand CancelCommand { get; set; }
+
+        public ICommand EditCommand { get; set; }
+
+        public ICommand AddOrderCommand { get; set; }
+
+        public ICommand RefreshOrderCommand { get; set; }
+
+        private string _searchBoxText;
+        public string SearchBoxText
+        {
+            get { return _searchBoxText; }
+            set { SetProperty(ref _searchBoxText, value); }
+        }
+
+        private IList<string> _suggestItems;
+
+        public IList<string> SuggestItems
+        {
+            get { return _suggestItems; }
+            set { SetProperty(ref _suggestItems, value); }
+        }
+
+        private string _queryText;
+        public string QueryText
+        {
+            get { return _queryText; }
+            set { SetProperty(ref _queryText, value); }
+        }
+
         public CustomerDetailViewModel()
         {
         }
@@ -56,7 +88,6 @@ namespace UnoContoso.ViewModels
                 SetBusy("CustomerLoad", true);
                 var id = navigationContext.Parameters.GetValue<Guid>("CustomerId");
                 //Debug.WriteLine($"{Title} / {id}");
-                Title = $"Details / {id}";
                 await DispatcherHelper.ExecuteOnUIThreadAsync(
                     async () =>
                     {
