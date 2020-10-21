@@ -124,34 +124,4 @@ namespace UnoContoso.Models
         /// </summary>
         public override string ToString() => InvoiceNumber.ToString();
     }
-
-    /// <summary>
-    /// Represents the term for an order.
-    /// </summary>
-    public enum Term
-    {
-        Net1, 
-        Net5,
-        Net15, 
-        Net30
-    }
-
-    /// <summary>
-    /// Represents the payment status for an order.
-    /// </summary>
-    public enum PaymentStatus
-    {
-        Unpaid,
-        Paid 
-    }
-
-    /// <summary>
-    /// Represents the status of an order.
-    /// </summary>
-    public enum OrderStatus
-    {
-        Open,
-        Filled, 
-        Cancelled
-    }
 }

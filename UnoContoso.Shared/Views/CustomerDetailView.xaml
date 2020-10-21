@@ -65,6 +65,8 @@
                 x:Name="BackButton"
                 Style="{StaticResource NavigationBackButtonNormalStyle}"
                 Command="{x:Bind ViewModel.GoBackCommand}"/>
+
+            <!--  Page title section  -->
             <TextBlock 
                 x:Name="PageTitle"
                 Text="{x:Bind ViewModel.Title}"

@@ -105,6 +105,7 @@ namespace UnoContoso
 				UseRest(containerRegistry);
 			}
 
+			containerRegistry.RegisterForNavigation<HomeView>();
 			containerRegistry.RegisterForNavigation<CustomerListView>();
 			containerRegistry.RegisterForNavigation<CustomerDetailView>();
 			containerRegistry.RegisterForNavigation<OrderDetailView>();

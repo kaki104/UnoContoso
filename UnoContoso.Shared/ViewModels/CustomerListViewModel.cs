@@ -198,10 +198,13 @@ namespace UnoContoso.ViewModels
 
         private void OnAddOrder()
         {
+            if (SelectedCustomer == null) return;
+
             NavigationService.RequestNavigate("OrderDetailView",
                 new NavigationParameters
                 {
-                    {"CustomerId", SelectedCustomer?.Model.Id }
+                    {"CustomerId", SelectedCustomer.Model.Id },
+                    {"NewOrder", true }
                 });
         }
 

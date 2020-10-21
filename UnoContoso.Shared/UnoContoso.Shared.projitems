@@ -27,6 +27,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DataGridHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\StreamHelperEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\CustomerWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\LineItemWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\OrderDeletionException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\OrderSavingException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Model\OrderWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StateTriggers\MobileScreenTrigger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserControls\CollapsibleSearchBox.xaml.cs">
       <DependentUpon>CollapsibleSearchBox.xaml</DependentUpon>
