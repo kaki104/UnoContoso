@@ -6,4 +6,5 @@
 	<type fullname="System.Linq.Expressions*" />
   </assembly>
 	<assembly fullname="UnoContoso.Models"/>
+	<assembly fullname="UnoContoso.Repository"/>
 </linker>
