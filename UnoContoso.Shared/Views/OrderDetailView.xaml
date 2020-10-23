@@ -9,7 +9,7 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:prismMvvm="using:Prism.Mvvm" 
-    prismMvvm:ViewModelLocator.AutoWireViewModel="True"
+    prismMvvm:ViewModelLocator.AutowireViewModel="True"
     xmlns:uc="using:UnoContoso.UserControls" 
     xmlns:stateTriggers="using:UnoContoso.StateTriggers" 
     xmlns:models="using:UnoContoso.Models" 
@@ -38,16 +38,18 @@
                     BorderThickness="0,0,0,1" />
                 <TextBlock
                     Grid.Column="0"
+                    Margin="0" Padding="0"
                     Text="{x:Bind Product.Name}" />
                 <TextBlock
                     Grid.Column="2"
+                    Margin="0" Padding="0"
                     HorizontalAlignment="Right"
                     Text="{Binding Product.ListPrice,
                         Converter={StaticResource StringFormatConverter},
                         ConverterParameter='{}{0:n}'}" />
                 <TextBlock
                     Grid.Column="3"
-                    Margin="8,0,0,0"
+                    Margin="8,0,0,0" Padding="0"
                     HorizontalAlignment="Right"
                     Text="{x:Bind Quantity}" />
 
@@ -406,6 +408,8 @@
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                                    <Setter Property="Margin" Value="0,0,0,0" />
+                                    <Setter Property="Padding" Value="0,0,0,0" />
                                     <Setter Property="MinHeight" Value="0" />
                                 </Style>
                             </ListView.ItemContainerStyle>
@@ -430,11 +434,21 @@
                                 x:Name="ProductSearchBox"
                                 Grid.Column="0"
                                 MinWidth="200"
-                                ItemsSource="{x:Bind ViewModel.Order.ProductSuggestions}"
+                                ItemsSource="{x:Bind ViewModel.SuggestItems}"
+                                Text="{x:Bind ViewModel.InputText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                 PlaceholderText="Enter a product...">
+                                <i:Interaction.Behaviors>
+                                    <ic:EventTriggerBehavior EventName="TextChanged">
+                                        <ic:InvokeCommandAction 
+                                            Command="{x:Bind ViewModel.TextChangeCommand}"/>
+                                    </ic:EventTriggerBehavior>
+                                    <ic:EventTriggerBehavior EventName="SuggestionChosen">
+                                        <ic:InvokeCommandAction
+                                            Command="{x:Bind ViewModel.SuggestionChosenCommand}"/>
+                                    </ic:EventTriggerBehavior>
+                                </i:Interaction.Behaviors>
                                 <AutoSuggestBox.ItemTemplate>
                                     <DataTemplate x:DataType="models:Product">
-
                                         <Grid HorizontalAlignment="Stretch">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
@@ -478,7 +492,7 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
                                     Grid.Column="0"
-                                    Margin="8,0,0,0"
+                                    Margin="0,0,0,0"
                                     Padding="0,0,0,0"
                                     HorizontalAlignment="Right"
                                     Text="{x:Bind ViewModel.Order.NewLineItemProductListPriceFormatted, Mode=OneWay}"
@@ -511,7 +525,8 @@
                                     Content="&#xE73E;"
                                     FontFamily="Segoe MDL2 Assets"
                                     Foreground="Green"
-                                    Visibility="{x:Bind ViewModel.Order.HasNewLineItem, Mode=OneWay}" />
+                                    Visibility="{x:Bind ViewModel.Order.HasNewLineItem, Mode=OneWay}" 
+                                    Command="{x:Bind ViewModel.AddProductCommand}"/>
                                 <Button
                                     Grid.Row="0"
                                     Grid.Column="1"
@@ -524,7 +539,8 @@
                                     Content="&#xE711;"
                                     FontFamily="Segoe MDL2 Assets"
                                     Foreground="Red"
-                                    Visibility="{x:Bind ViewModel.Order.HasNewLineItem, Mode=OneWay}" />
+                                    Visibility="{x:Bind ViewModel.Order.HasNewLineItem, Mode=OneWay}"
+                                    Command="{x:Bind ViewModel.CancelProductCommand}"/>
                             </Grid>
                         </Grid>
 

@@ -277,7 +277,7 @@ namespace UnoContoso.Model
         /// <summary>
         /// Gets the product list price of the new line item, formatted for display.
         /// </summary>
-        public string NewLineItemProductListPriceFormatted => (NewLineItem?.Product?.ListPrice ?? 0).ToString("c");
+        public string NewLineItemProductListPriceFormatted => (NewLineItem?.Product?.ListPrice ?? 0).ToString("n");
 
         /// <summary>
         /// Gets or sets the date this order was placed. 
@@ -461,29 +461,6 @@ namespace UnoContoso.Model
                 await DispatcherHelper.ExecuteOnUIThreadAsync(() => new OrderSavingException(
                     "Unable to save. There might have been a problem " +
                     "connecting to the database. Please try again."));
-            }
-        }
-
-        /// <summary>
-        /// Stores the product suggestions. 
-        /// </summary>
-        public ObservableCollection<Product> ProductSuggestions { get; } = new ObservableCollection<Product>();
-
-        /// <summary>
-        /// Queries the database and updates the list of new product suggestions. 
-        /// </summary>
-        public async void UpdateProductSuggestions(string queryText)
-        {
-            ProductSuggestions.Clear();
-
-            if (!string.IsNullOrEmpty(queryText))
-            {
-                var suggestions = await _contosoRepository.Products.GetAsync(queryText);
-
-                foreach (Product p in suggestions)
-                {
-                    ProductSuggestions.Add(p);
-                }
             }
         }
     }

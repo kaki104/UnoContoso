@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Filter" Version="1.1.1" />
     <PackageReference Include="Uno.Core" Version="2.0.0" />
-    <PackageReference Include="Prism.DryIoc.Uno" Version="8.0.0.1850-pre" />
+    <PackageReference Include="Prism.DryIoc.Uno" Version="8.0.0.1909" />
     <PackageReference Include="Uno.Microsoft.Toolkit.Uwp.UI.Controls">
       <Version>6.1.0-build.191.gc988bdd4ff</Version>
     </PackageReference>

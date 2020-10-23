@@ -5,6 +5,7 @@ using Prism.Regions;
 using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
@@ -37,6 +38,35 @@ namespace UnoContoso.ViewModels
 
         public ICommand EmailCommand { get; set; }
 
+        public ICommand TextChangeCommand { get; set; }
+
+        public ICommand SuggestionChosenCommand { get; set; }
+
+        public ICommand AddProductCommand { get; set; }
+
+        public ICommand CancelProductCommand { get; set; }
+
+        private string _searchBoxText;
+        public string SearchBoxText
+        {
+            get { return _searchBoxText; }
+            set { SetProperty(ref _searchBoxText, value); }
+        }
+
+        private IList<Product> _suggestItems;
+        public IList<Product> SuggestItems
+        {
+            get { return _suggestItems; }
+            set { SetProperty(ref _suggestItems, value); }
+        }
+
+        private string _inputText;
+        public string InputText
+        {
+            get { return _inputText; }
+            set { SetProperty(ref _inputText, value); }
+        }
+
         public OrderDetailViewModel()
         {
 
@@ -53,6 +83,7 @@ namespace UnoContoso.ViewModels
 
         private void Init()
         {
+            SuggestItems = new ObservableCollection<Product>();
             SaveCommand = new DelegateCommand(OnSave, () => Order != null && Order.IsModified)
                 .ObservesProperty(() => Order.IsModified);
             RevertCommand = new DelegateCommand(OnRevert, () => Order != null && Order.IsModified)
@@ -60,6 +91,57 @@ namespace UnoContoso.ViewModels
             RefreshCommand = new DelegateCommand(OnRefresh);
             RemoveCommand = new DelegateCommand<LineItem>(OnRemove);
             EmailCommand = new DelegateCommand(OnEmail);
+            TextChangeCommand = new DelegateCommand<object>(OnTextChange);
+            SuggestionChosenCommand = new DelegateCommand<object>(OnSuggestionChosen);
+            AddProductCommand = new DelegateCommand(OnAddProduct);
+            CancelProductCommand = new DelegateCommand(() => ClearCandidateProduct());
+        }
+
+        private void OnAddProduct()
+        {
+            Order.LineItems.Add(Order.NewLineItem.Model);
+            ClearCandidateProduct();
+        }
+
+        private void ClearCandidateProduct()
+        {
+            InputText = string.Empty;
+            Order.NewLineItem = new LineItemWrapper();
+        }
+
+        private void OnSuggestionChosen(object obj)
+        {
+            var args = obj as Windows.UI.Xaml.Controls.AutoSuggestBoxSuggestionChosenEventArgs;
+            if (args.SelectedItem == null) return;
+            var selectedProduct = args.SelectedItem as Product;
+            Order.NewLineItem.Product = selectedProduct;
+        }
+
+        private void OnTextChange(object obj)
+        {
+            var args = obj as Windows.UI.Xaml.Controls.AutoSuggestBoxTextChangedEventArgs;
+            if (args == null) return;
+            if(args.Reason == Windows.UI.Xaml.Controls.AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                UpdateProductSuggestions(InputText);
+            }
+        }
+
+        private async void UpdateProductSuggestions(string inputText)
+        {
+            if (string.IsNullOrEmpty(inputText)
+                || inputText.Length < 2) return;
+
+            await DispatcherHelper.ExecuteOnUIThreadAsync(
+                async () => 
+                {
+                    SuggestItems.Clear();
+                    var suggestions = await _contosoRepository.Products.GetAsync(inputText);
+                    foreach (var product in suggestions)
+                    {
+                        SuggestItems.Add(product);
+                    }
+                });
         }
 
         private async void OnSave()

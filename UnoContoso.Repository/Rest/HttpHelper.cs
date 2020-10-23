@@ -24,6 +24,7 @@
 
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,13 +51,21 @@ namespace UnoContoso.Repository.Rest
         /// </summary>
         public async Task<TResult> GetAsync<TResult>(string controller)
         {
-            using (var client = BaseClient())
+            try
             {
-                var response = await client.GetAsync(controller);
-                string json = await response.Content.ReadAsStringAsync();
-                TResult obj = JsonConvert.DeserializeObject<TResult>(json);
-                return obj;
+                using (var client = BaseClient())
+                {
+                    var response = await client.GetAsync(controller);
+                    string json = await response.Content.ReadAsStringAsync();
+                    TResult obj = JsonConvert.DeserializeObject<TResult>(json);
+                    return obj;
+                }
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            return default(TResult);
         }
 
         /// <summary>

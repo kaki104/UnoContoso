@@ -9,7 +9,7 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:toolkit="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:prismMvvm="using:Prism.Mvvm" 
-    prismMvvm:ViewModelLocator.AutoWireViewModel="True"
+    prismMvvm:ViewModelLocator.AutowireViewModel="True"
     xmlns:uc="using:UnoContoso.UserControls" 
     xmlns:stateTriggers="using:UnoContoso.StateTriggers"
     mc:Ignorable="d">

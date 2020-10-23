@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace UnoContoso.Repository.Sql
 {
@@ -60,16 +61,23 @@ namespace UnoContoso.Repository.Sql
 
         public async Task<IEnumerable<Product>> GetAsync(string value)
         {
-            return await _db.Products.Where(product =>
-                product.Name.StartsWith(value) ||
-                product.Color.StartsWith(value) ||
-                product.DaysToManufacture.ToString().StartsWith(value) ||
-                product.StandardCost.ToString().StartsWith(value) ||
-                product.ListPrice.ToString().StartsWith(value) ||
-                product.Weight.ToString().StartsWith(value) ||
-                product.Description.StartsWith(value))
-            .AsNoTracking()
-            .ToListAsync();
+            value = value.ToLower();
+            try
+            {
+                var products = await _db.Products
+                    .Where(product =>
+                        product.Name.ToLower().StartsWith(value) ||
+                        product.Color.ToLower().StartsWith(value) ||
+                        product.Description.ToLower().StartsWith(value))
+                    .AsNoTracking()
+                    .ToListAsync();
+                return products;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            return null;
         }
     }
 }
