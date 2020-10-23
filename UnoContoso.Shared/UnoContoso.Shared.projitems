@@ -18,8 +18,17 @@
     <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Base\DialogViewModelBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\DataGridBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\NavigationViewBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\ConfirmControl.xaml.cs">
+      <DependentUpon>ConfirmControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Controls\MessageControl.xaml.cs">
+      <DependentUpon>MessageControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)ControlViewModels\ConfirmViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ControlViewModels\MessageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventArgs\BusyEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventArgs\MessageEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\BusyEvent.cs" />
@@ -64,6 +73,14 @@
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\ConfirmControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Controls\MessageControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="$(MSBuildThisFileDirectory)Styles\_DataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

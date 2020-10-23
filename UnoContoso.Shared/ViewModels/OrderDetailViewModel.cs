@@ -2,6 +2,7 @@
 using Prism.Commands;
 using Prism.Ioc;
 using Prism.Regions;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,11 @@ using System.Windows.Input;
 using UnoContoso.Model;
 using UnoContoso.Models;
 using UnoContoso.Repository;
+using Windows.ApplicationModel.Email;
 
 namespace UnoContoso.ViewModels
 {
-    public class OrderDetailViewModel : ViewModelBase
+    public class OrderDetailViewModel : ViewModelBase, IConfirmNavigationRequest
     {
         private readonly IContosoRepository _contosoRepository;
 
@@ -31,6 +33,10 @@ namespace UnoContoso.ViewModels
 
         public ICommand RefreshCommand { get; set; }
 
+        public ICommand RemoveCommand { get; set; }
+
+        public ICommand EmailCommand { get; set; }
+
         public OrderDetailViewModel()
         {
 
@@ -47,6 +53,90 @@ namespace UnoContoso.ViewModels
 
         private void Init()
         {
+            SaveCommand = new DelegateCommand(OnSave, () => Order != null && Order.IsModified)
+                .ObservesProperty(() => Order.IsModified);
+            RevertCommand = new DelegateCommand(OnRevert, () => Order != null && Order.IsModified)
+                .ObservesProperty(() => Order.IsModified);
+            RefreshCommand = new DelegateCommand(OnRefresh);
+            RemoveCommand = new DelegateCommand<LineItem>(OnRemove);
+            EmailCommand = new DelegateCommand(OnEmail);
+        }
+
+        private async void OnSave()
+        {
+            try
+            {
+                await Order.SaveOrderAsync();
+            }
+            catch (OrderSavingException ex)
+            {
+                DialogService.ShowDialog("MessageControl",
+                    new DialogParameters
+                    {
+                        { "title", "Unable to save" },
+                        { "message", $"There was an error saving your order:\n{ex.Message}"}
+                    }, null);
+            }
+        }
+
+        private void OnRevert()
+        {
+            DialogService.ShowDialog("ConfirmControl",
+                new DialogParameters
+                {
+                    {"title", $"Save changes to Invoice # {Order.InvoiceNumber}?"},
+                    {"message", $"Invoice # {Order.InvoiceNumber} " +
+                        "has unsaved changes that will be lost. Do you want to save your changes?"}
+                },
+                async callback => 
+                {
+                    switch(callback.Result)
+                    {
+                        case ButtonResult.Yes:
+                            await Order.SaveOrderAsync();
+                            OnRefresh();
+                            break;
+                        case ButtonResult.No:
+                            OnRefresh();
+                            break;
+                        case ButtonResult.Cancel:
+                            break;
+                    }
+                });
+        }
+
+        private async void OnRefresh()
+        {
+            Order = new OrderWrapper(_contosoRepository,
+                await _contosoRepository.Orders.GetAsync(Order.Id));
+        }
+
+        private async void OnEmail()
+        {
+            var emailMessage = new EmailMessage
+            {
+                Body = $"Dear {Order.CustomerName},",
+                Subject = "A message from Contoso about order " +
+                    $"#{Order.InvoiceNumber} placed on {Order.DatePlaced:MM/dd/yyyy}"
+            };
+
+            if (!string.IsNullOrEmpty(Order.Customer.Email))
+            {
+                var emailRecipient = new EmailRecipient(Order.Customer.Email);
+                emailMessage.To.Add(emailRecipient);
+            }
+
+            await EmailManager.ShowComposeNewEmailAsync(emailMessage);
+        }
+
+        private void OnRemove(LineItem obj)
+        {
+            Order.LineItems.Remove(obj);
+        }
+
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            base.OnNavigatedFrom(navigationContext);
         }
 
         public override async void OnNavigatedTo(NavigationContext navigationContext)
@@ -79,6 +169,40 @@ namespace UnoContoso.ViewModels
                         Order = new OrderWrapper(_contosoRepository, order);
                     });
                 SetBusy("OrderLoad", false);
+            }
+        }
+
+        public void ConfirmNavigationRequest(NavigationContext navigationContext, Action<bool> continuationCallback)
+        {
+            if (Order.IsModified)
+            {
+                DialogService.ShowDialog("ConfirmControl",
+                    new DialogParameters
+                    {
+                        {"title", $"Save changes to Invoice # {Order.InvoiceNumber}?" },
+                        {"message", $"Invoice # {Order.InvoiceNumber} " +
+                            "has unsaved changes that will be lost. Do you want to save your changes?"}
+                    },
+                    async callback =>
+                    {
+                        switch (callback.Result)
+                        {
+                            case ButtonResult.Yes:
+                                await Order.SaveOrderAsync();
+                                continuationCallback.Invoke(true);
+                                break;
+                            case ButtonResult.No:
+                                continuationCallback.Invoke(true);
+                                break;
+                            case ButtonResult.Cancel:
+                                continuationCallback.Invoke(false);
+                                break;
+                        }
+                    });
+            }
+            else
+            {
+                continuationCallback.Invoke(true);
             }
         }
 

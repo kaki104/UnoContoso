@@ -13,6 +13,7 @@
     xmlns:uc="using:UnoContoso.UserControls" 
     xmlns:stateTriggers="using:UnoContoso.StateTriggers" 
     xmlns:models="using:UnoContoso.Models" 
+    x:Name="Root"
     mc:Ignorable="d">
     <UserControl.Resources>
         <Style TargetType="ComboBox">
@@ -41,24 +42,30 @@
                 <TextBlock
                     Grid.Column="2"
                     HorizontalAlignment="Right"
-                    Text="{x:Bind Product.ListPrice}" />
+                    Text="{Binding Product.ListPrice,
+                        Converter={StaticResource StringFormatConverter},
+                        ConverterParameter='{}{0:n}'}" />
                 <TextBlock
                     Grid.Column="3"
                     Margin="8,0,0,0"
                     HorizontalAlignment="Right"
                     Text="{x:Bind Quantity}" />
+
                 <Button
                     Grid.Row="0"
                     Grid.Column="5"
                     Margin="4,0,0,0"
                     Padding="4"
                     HorizontalAlignment="Right"
-                    AutomationProperties.Name="Cancel the addition"
+                    AutomationProperties.Name="Remove the addition"
                     Background="Transparent"
                     BorderThickness="0"
                     Content="&#xE711;"
                     FontFamily="Segoe MDL2 Assets"
-                    Foreground="Red" />
+                    Foreground="Red" 
+                    Command="{Binding ElementName=LineItemListView, 
+                        Path=DataContext.RemoveCommand}"
+                    CommandParameter="{Binding}" />
             </Grid>
         </DataTemplate>
 
@@ -98,7 +105,9 @@
                     Margin="0,0,0,0"
                     Padding="0,0,0,0"
                     HorizontalAlignment="Left"
-                    Text="{x:Bind Product.ListPrice}" />
+                    Text="{Binding Product.ListPrice, 
+                        Converter={StaticResource StringFormatConverter},
+                        ConverterParameter='{}{0:n}'}" />
                 <Button
                     Grid.Row="1"
                     Grid.Column="2"
@@ -110,7 +119,10 @@
                     BorderThickness="0"
                     Content="&#xE711;"
                     FontFamily="Segoe MDL2 Assets"
-                    Foreground="Red" />
+                    Foreground="Red" 
+                    Command="{Binding ElementName=LineItemListView, 
+                        Path=DataContext.RemoveCommand}"
+                    CommandParameter="{Binding}" />
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
@@ -148,6 +160,7 @@
                 x:Name="mainCommandBar"
                 HorizontalAlignment="Right"
                 Background="White"
+                DefaultLabelPosition="Right"
                 RelativePanel.AlignRightWithPanel="True"
                 RelativePanel.RightOf="PageTitle">
                 <AppBarButton
@@ -207,7 +220,8 @@
                         <HyperlinkButton
                             Margin="0,0,0,0"
                             Padding="0,0,0,0"
-                            Content="{x:Bind ViewModel.Order.Customer.Email, Mode=OneWay}" />
+                            Content="{x:Bind ViewModel.Order.Customer.Email, Mode=OneWay}" 
+                            Command="{x:Bind ViewModel.EmailCommand}"/>
                         <TextBlock
                             Margin="0,20,0,0"
                             FontWeight="SemiBold"
@@ -252,7 +266,9 @@
                             <TextBlock
                                 Grid.Row="0"
                                 Grid.Column="1"
-                                Text="{x:Bind ViewModel.Order.DatePlaced, Mode=OneWay}" />
+                                Text="{Binding Order.DatePlaced, Mode=OneWay,
+                                    Converter={StaticResource StringFormatConverter},
+                                    ConverterParameter='{}{0:g}'}" />
                             <TextBlock
                                 Grid.Row="1"
                                 Grid.Column="0"
@@ -262,7 +278,9 @@
                             <TextBlock
                                 Grid.Row="1"
                                 Grid.Column="1"
-                                Text="{x:Bind ViewModel.Order.DateFilled, Mode=OneWay}" />
+                                Text="{Binding Order.DateFilled, Mode=OneWay,
+                                    Converter={StaticResource StringFormatConverter},
+                                    ConverterParameter='{}{0:g}'}" />
                         </Grid>
 
                         <StackPanel
@@ -388,8 +406,6 @@
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                    <Setter Property="Margin" Value="0,0,0,0" />
-                                    <Setter Property="Padding" Value="0,0,0,0" />
                                     <Setter Property="MinHeight" Value="0" />
                                 </Style>
                             </ListView.ItemContainerStyle>
@@ -441,7 +457,9 @@
                                                 Grid.Column="2"
                                                 Margin="8,0,8,8"
                                                 HorizontalAlignment="Right"
-                                                Text="{x:Bind ListPrice}" />
+                                                Text="{Binding ListPrice,
+                                                    Converter={StaticResource StringFormatConverter},
+                                                    ConverterParameter='{}{0:n}'}" />
                                         </Grid>
                                     </DataTemplate>
                                 </AutoSuggestBox.ItemTemplate>
@@ -541,7 +559,9 @@
                                 Margin="0,0,0,0"
                                 Padding="0,0,0,0"
                                 HorizontalAlignment="Right"
-                                Text="{x:Bind ViewModel.Order.Subtotal, Mode=OneWay}" />
+                                Text="{Binding Order.Subtotal, Mode=OneWay,
+                                    Converter={StaticResource StringFormatConverter},
+                                    ConverterParameter='{}{0:n}'}" />
                             <Border
                                 Grid.Row="1"
                                 Grid.Column="1"
@@ -560,7 +580,9 @@
                                 Margin="0,0,0,0"
                                 Padding="0,0,0,0"
                                 HorizontalAlignment="Right"
-                                Text="{x:Bind ViewModel.Order.Tax, Mode=OneWay}" />
+                                Text="{Binding Order.Tax, Mode=OneWay,
+                                    Converter={StaticResource StringFormatConverter},
+                                    ConverterParameter='{}{0:n}'}" />
                             <Border
                                 Grid.Row="3"
                                 Grid.Column="1"
@@ -581,7 +603,9 @@
                                 Padding="0,0,0,0"
                                 HorizontalAlignment="Right"
                                 FontWeight="Bold"
-                                Text="{x:Bind ViewModel.Order.GrandTotal, Mode=OneWay}" />
+                                Text="{Binding Order.GrandTotal, Mode=OneWay,
+                                    Converter={StaticResource StringFormatConverter},
+                                    ConverterParameter='{}{0:n}'}" />
                         </Grid>
                     </StackPanel>
                 </Grid>
@@ -613,6 +637,7 @@
                         <Setter Target="customerInfoPanel.Margin" Value="12,20,0,0" />
                         <Setter Target="StatusPanel.Margin" Value="12,0,0,0" />
                         <Setter Target="sp1.Margin" Value="12,40,0,0" />
+                        <Setter Target="mainCommandBar.DefaultLabelPosition" Value="Bottom" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState>
@@ -647,6 +672,7 @@
                         <Setter Target="customerInfoPanel.Margin" Value="12,20,0,0" />
                         <Setter Target="sp1.Margin" Value="12,40,0,0" />
                         <Setter Target="StatusPanel.Margin" Value="12,0,0,0" />
+                        <Setter Target="mainCommandBar.DefaultLabelPosition" Value="Bottom" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

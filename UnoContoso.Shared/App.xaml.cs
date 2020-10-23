@@ -31,6 +31,8 @@ using Prism.Mvvm;
 using System.Reflection;
 using Prism.Regions;
 using UnoContoso.Models.Consts;
+using UnoContoso.Controls;
+using UnoContoso.ControlViewModels;
 
 namespace UnoContoso
 {
@@ -109,9 +111,12 @@ namespace UnoContoso
 			containerRegistry.RegisterForNavigation<CustomerListView>();
 			containerRegistry.RegisterForNavigation<CustomerDetailView>();
 			containerRegistry.RegisterForNavigation<OrderDetailView>();
+
+			containerRegistry.RegisterDialog<MessageControl, MessageViewModel>();
+			containerRegistry.RegisterDialog<ConfirmControl, ConfirmViewModel>();
 		}
 
-        protected override void ConfigureViewModelLocator()
+		protected override void ConfigureViewModelLocator()
         {
             base.ConfigureViewModelLocator();
 			ViewModelLocationProvider.SetDefaultViewTypeToViewModelTypeResolver((viewType) =>

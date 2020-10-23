@@ -5,6 +5,7 @@ using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Navigation;
 using Prism.Regions;
+using Prism.Services.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -34,6 +35,7 @@ namespace UnoContoso.ViewModels
         protected IEventAggregator EventAggregator { get; }
 
         protected IRegionManager RegionManager { get; }
+        protected IDialogService DialogService { get; }
 
         protected IRegionNavigationService NavigationService { get; private set; }
 
@@ -78,6 +80,7 @@ namespace UnoContoso.ViewModels
             ContainerProvider = containerProvider;
             EventAggregator = ContainerProvider.Resolve<IEventAggregator>();
             RegionManager = ContainerProvider.Resolve<IRegionManager>();
+            DialogService = ContainerProvider.Resolve<IDialogService>();
 
             InitBase();
         }

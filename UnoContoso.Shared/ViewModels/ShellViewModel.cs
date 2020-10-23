@@ -37,6 +37,8 @@ namespace UnoContoso.ViewModels
             set { SetProperty(ref _selectedItem, value); }
         }
 
+        private NavigationMenuItem _previewSelectedItem;
+
         private IList<NavigationMenuItem> _menus;
         private readonly IDialogService _dialogService;
 
@@ -76,7 +78,7 @@ namespace UnoContoso.ViewModels
 
             //Start page
             RegionManager.RegisterViewWithRegion(Regions.CONTENT_REGION, typeof(HomeView));
-
+            
             EventSubscribe();
 
             PropertyChanged += ShellViewModel_PropertyChanged;
@@ -87,9 +89,23 @@ namespace UnoContoso.ViewModels
             switch (e.PropertyName)
             {
                 case nameof(SelectedItem):
-                    if (SelectedItem == null) return;
-                    RegionManager.RequestNavigate(Regions.CONTENT_REGION, SelectedItem.Path);
-                    
+                    if (SelectedItem == null
+                        || SelectedItem == _previewSelectedItem) return;
+
+                    RegionManager.RequestNavigate(Regions.CONTENT_REGION, SelectedItem.Path, 
+                        callback => 
+                        {
+                            if(callback.Result == false)
+                            {
+                                //원래 메뉴로 돌려놔함
+                                SelectedItem = _previewSelectedItem;
+                            }
+                            else
+                            {
+                                //네비게이션이 완료되었을 때만 입력
+                                _previewSelectedItem = SelectedItem;
+                            }
+                        });
                     break;
             }
         }
