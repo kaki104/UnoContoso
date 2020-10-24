@@ -99,6 +99,10 @@ namespace UnoContoso.ViewModels
 
         private void OnAddProduct()
         {
+            Order.NewLineItem.Model.Order = Order.Model;
+            Order.NewLineItem.Model.OrderId = Order.Id;
+            Order.NewLineItem.Model.ProductId = Order.NewLineItem.Model.Product.Id;
+
             Order.LineItems.Add(Order.NewLineItem.Model);
             ClearCandidateProduct();
         }

@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace UnoContoso.Repository.Sql
 {
@@ -91,17 +92,45 @@ namespace UnoContoso.Repository.Sql
 
         public async Task<Order> UpsertAsync(Order order)
         {
-            var existing = await _db.Orders.FirstOrDefaultAsync(_order => _order.Id == order.Id);
-            if (null == existing)
+            var existing = await _db.Orders
+                                .Where(_order => _order.Id == order.Id)
+                                .Include(_order => _order.LineItems)
+                                .FirstOrDefaultAsync();
+            if (existing == null)
             {
                 order.InvoiceNumber = _db.Orders.Max(_order => _order.InvoiceNumber) + 1;
                 _db.Orders.Add(order);
+                await _db.SaveChangesAsync();
             }
             else
             {
                 _db.Entry(existing).CurrentValues.SetValues(order);
+
+                //remove lineitem
+                var remove = (from line1 in existing.LineItems
+                              join line2 in order.LineItems
+                              on line1.Id equals line2.Id into joiner
+                              from line in joiner.DefaultIfEmpty()
+                              where line == null
+                              select line1).ToList();
+                if(remove.Any())
+                {
+                    remove.ForEach(r => existing.LineItems.Remove(r));
+                }
+                //add lineitems
+                var add = (from line1 in order.LineItems
+                           join line2 in existing.LineItems
+                           on line1.Id equals line2.Id into joiner
+                           from line in joiner.DefaultIfEmpty()
+                           where line == null
+                           select line1).ToList();
+                if(add.Any())
+                {
+                    add.ForEach(a => existing.LineItems.Add(a));
+                }
+
+                await _db.SaveChangesAsync();
             }
-            await _db.SaveChangesAsync();
             return order;
         }
 
