@@ -110,6 +110,7 @@ namespace UnoContoso
 			containerRegistry.RegisterForNavigation<HomeView>();
 			containerRegistry.RegisterForNavigation<CustomerListView>();
 			containerRegistry.RegisterForNavigation<CustomerDetailView>();
+			containerRegistry.RegisterForNavigation<OrderListView>();
 			containerRegistry.RegisterForNavigation<OrderDetailView>();
 
 			containerRegistry.RegisterDialog<MessageControl, MessageViewModel>();

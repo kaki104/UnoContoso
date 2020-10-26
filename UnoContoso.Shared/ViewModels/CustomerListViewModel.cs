@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Uno;
+using Uno.Extensions;
 using UnoContoso.Helpers;
 using UnoContoso.Model;
 using UnoContoso.Models;
@@ -124,29 +125,37 @@ namespace UnoContoso.ViewModels
         {
             if(string.IsNullOrEmpty(queryText))
             {
-                Customers = _allCustomers;
+                Customers.AddRange(_allCustomers);
             }
             else
             {
-                string[] parameters = queryText.Split(new char[] { ' ' },
-                    StringSplitOptions.RemoveEmptyEntries);
-                var customers = _allCustomers
-                    .Where(c => parameters.Any(p =>
-                        c.Address.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
-                        c.FirstName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
-                        c.LastName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
-                        c.Company.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
-                    .OrderByDescending(c => parameters.Count(p =>
-                        c.Address.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
-                        c.FirstName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
-                        c.LastName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
-                        c.Company.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
-                    .ToList();
                 await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
                 {
-                    Customers = customers;
+                    List<CustomerWrapper> customers = GetCustomers(queryText);
+
+                    Customers.AddRange(customers);
                 });
             }
+        }
+
+        private List<CustomerWrapper> GetCustomers(string queryText)
+        {
+            string[] parameters = queryText.Split(new char[] { ' ' },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            var customers = _allCustomers
+                .Where(c => parameters.Any(p =>
+                    c.Address.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
+                    c.FirstName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
+                    c.LastName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
+                    c.Company.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
+                .OrderByDescending(c => parameters.Count(p =>
+                    c.Address.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
+                    c.FirstName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
+                    c.LastName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
+                    c.Company.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
+                .ToList();
+            return customers;
         }
 
         private void SetSuggestItems(string searchBoxText)
@@ -158,19 +167,8 @@ namespace UnoContoso.ViewModels
             }
             else
             {
-                string[] parameters = searchBoxText.Split(new char[] { ' ' },
-                    StringSplitOptions.RemoveEmptyEntries);
-                SuggestItems = _allCustomers
-                    .Where(c => parameters.Any(p =>
-                        c.Address.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
-                        c.FirstName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
-                        c.LastName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
-                        c.Company.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
-                    .OrderByDescending(c => parameters.Count(p =>
-                        c.Address.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
-                        c.FirstName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
-                        c.LastName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
-                        c.Company.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
+                var customers = GetCustomers(searchBoxText);
+                SuggestItems = customers
                     .Select(c => $"{c.FirstName} {c.LastName}")
                     .ToList();
             }

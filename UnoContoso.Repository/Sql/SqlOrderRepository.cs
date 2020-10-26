@@ -69,25 +69,25 @@ namespace UnoContoso.Repository.Sql
 
         public async Task<IEnumerable<Order>> GetAsync(string value)
         {
-            string[] parameters = value.Split(' ');
-            return await _db.Orders
-                .Include(order => order.Customer)
-                .Include(order => order.LineItems)
-                .ThenInclude(lineItem => lineItem.Product)
-                .Where(order => parameters
-                    .Any(parameter =>
-                        order.Address.StartsWith(parameter) ||
-                        order.Customer.FirstName.StartsWith(parameter) ||
-                        order.Customer.LastName.StartsWith(parameter) ||
-                        order.InvoiceNumber.ToString().StartsWith(parameter)))
-                .OrderByDescending(order => parameters
-                    .Count(parameter =>
-                        order.Address.StartsWith(parameter) ||
-                        order.Customer.FirstName.StartsWith(parameter) ||
-                        order.Customer.LastName.StartsWith(parameter) ||
-                        order.InvoiceNumber.ToString().StartsWith(parameter)))
-                .AsNoTracking()
-                .ToListAsync();
+            try
+            {
+                //EF3.x롤 업그레이드 되면서 너무 복잡한 쿼리는 실행 못함
+                return await _db.Orders
+                    .Include(order => order.Customer)
+                    .Include(order => order.LineItems)
+                    .ThenInclude(lineItem => lineItem.Product)
+                    .Where(order => 
+                            order.Address.ToLower().StartsWith(value) ||
+                            order.Customer.FirstName.ToLower().StartsWith(value) ||
+                            order.Customer.LastName.ToLower().StartsWith(value))
+                    .OrderByDescending(order => order.InvoiceNumber)
+                    .AsNoTracking()
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public async Task<Order> UpsertAsync(Order order)

@@ -29,6 +29,7 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)ControlViewModels\ConfirmViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ControlViewModels\MessageViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converters\Converters.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventArgs\BusyEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventArgs\MessageEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\BusyEvent.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CustomerListViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\HomeViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\OrderDetailViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\OrderListViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\CustomerDetailView.xaml.cs">
       <DependentUpon>CustomerDetailView.xaml</DependentUpon>
     </Compile>
@@ -59,6 +61,9 @@
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Views\OrderDetailView.xaml.cs">
       <DependentUpon>OrderDetailView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)Views\OrderListView.xaml.cs">
+      <DependentUpon>OrderListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Views\Shell.xaml.cs">
       <DependentUpon>Shell.xaml</DependentUpon>
@@ -134,6 +139,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="$(MSBuildThisFileDirectory)Views\OrderDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\OrderListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

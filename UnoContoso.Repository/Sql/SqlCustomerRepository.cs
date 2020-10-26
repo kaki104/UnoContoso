@@ -61,22 +61,14 @@ namespace UnoContoso.Repository.Sql
 
         public async Task<IEnumerable<Customer>> GetAsync(string value)
         {
-            string[] parameters = value.Split(' ');
             return await _db.Customers
                 .Where(customer =>
-                    parameters.Any(parameter =>
-                        customer.FirstName.StartsWith(parameter) ||
-                        customer.LastName.StartsWith(parameter) ||
-                        customer.Email.StartsWith(parameter) ||
-                        customer.Phone.StartsWith(parameter) ||
-                        customer.Address.StartsWith(parameter)))
-                .OrderByDescending(customer =>
-                    parameters.Count(parameter =>
-                        customer.FirstName.StartsWith(parameter) ||
-                        customer.LastName.StartsWith(parameter) ||
-                        customer.Email.StartsWith(parameter) ||
-                        customer.Phone.StartsWith(parameter) ||
-                        customer.Address.StartsWith(parameter)))
+                        customer.FirstName.ToLower().StartsWith(value) ||
+                        customer.LastName.ToLower().StartsWith(value) ||
+                        customer.Email.ToLower().StartsWith(value) ||
+                        customer.Phone.ToLower().StartsWith(value) ||
+                        customer.Address.ToLower().StartsWith(value))
+                .OrderBy(customer => customer.ToString())
                 .AsNoTracking()
                 .ToListAsync();
         }
