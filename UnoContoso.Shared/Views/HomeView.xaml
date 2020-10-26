@@ -13,33 +13,38 @@
     mc:Ignorable="d">
 
     <Grid>
-        <RelativePanel>
-            <TextBlock 
+        <ScrollViewer>
+            <RelativePanel>
+                <TextBlock 
                 x:Name="PageTitle"
-                Text="Home"
+                Text="Uno Platform"
                 Style="{StaticResource TitleTextBlockStyle}" />
 
-            <Button
-                x:Name="TestButton"
-                Content="Test"
-                Command="{Binding TestCommand}"
-                RelativePanel.Below="PageTitle"/>
-
-            <TextBlock
-                x:Name="TestResult"
-                RelativePanel.Below="TestButton"
-                Text="{Binding Result}"/>
-            
-            <TextBlock
-                x:Name="TestCustomer"
-                RelativePanel.Below="TestResult">
-                <Run Text="{Binding Customer.Id}"/>
-                <Run Text="{Binding Customer.FirstName}"/>
-                <Run Text="{Binding Customer.LastName}"/>
-                <Run Text="{Binding Customer.Company}"/>
-                <Run Text="{Binding Customer.Email}"/>
-            </TextBlock>
-
-        </RelativePanel>
+                <StackPanel
+                    Margin="0,10,0,0"
+                    RelativePanel.Below="PageTitle">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+                            <Setter Property="TextWrapping" Value="Wrap" />
+                            <Setter Property="Margin" Value="0,10,0,0"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}">
+                        Pixel-Perfect Multi-Platform Applications with C# and WinUI
+                    </TextBlock>
+                    <TextBlock Style="{StaticResource BodyTextStyle}">
+                        The first and only UI Platform for single-codebase applications for Windows, WebAssembly, iOS, macOS, Android and Linux
+                    </TextBlock>
+                    <Button 
+                        Margin="0,10,0,0" 
+                        Content="Get Started" 
+                        Background="#FF654FF7" 
+                        Foreground="White"
+                        Padding="20,10"
+                        CornerRadius="5"/>
+                </StackPanel>
+            </RelativePanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

@@ -44,14 +44,30 @@ namespace UnoContoso.ViewModels
                 {
                     // Clear out the existing customer.
                     SelectedCustomer = null;
-                    //if (_selectedOrder != null)
-                    //{
-                    //    Task.Run(() => LoadCustomer(_selectedOrder.CustomerId));
-                    //}
-                    //OnPropertyChanged(nameof(SelectedOrderGrandTotalFormatted));
+                    if (_selectedOrder != null)
+                    {
+                        Task.Run(() => LoadCustomer(_selectedOrder.CustomerId));
+                    }
+                    RaisePropertyChanged(nameof(SelectedOrderGrandTotalFormatted));
                 }
 
             }
+        }
+
+        /// <summary>
+        /// Gets a formatted version of the selected order's grand total value.
+        /// </summary>
+        public string SelectedOrderGrandTotalFormatted => (SelectedOrder?.GrandTotal ?? 0).ToString("n");
+
+
+        private async void LoadCustomer(Guid customerId)
+        {
+            var customer = await _contosoRepository.Customers.GetAsync(customerId);
+            await DispatcherHelper.ExecuteOnUIThreadAsync(
+                () => 
+                {
+                    SelectedCustomer = customer;
+                });
         }
 
         /// <summary>
@@ -202,12 +218,22 @@ namespace UnoContoso.ViewModels
             await EmailManager.ShowComposeNewEmailAsync(emailMessage);
         }
 
-        private async void OnDelete()
+        private void OnDelete()
         {
             try
             {
                 var deleteOrder = SelectedOrder;
-                await _contosoRepository.Orders.DeleteAsync(deleteOrder.Id);
+                DialogService.ShowDialog("ConfirmControl",
+                    new DialogParameters
+                    {
+                        {"title", $"Delete to Invoice # {deleteOrder.InvoiceNumber}?" },
+                        {"message", $"Are you sure you want to delete Invoice # {deleteOrder.InvoiceNumber}" },
+                        {"buttons", "Yes,No"}
+                    }, async result => 
+                    {
+                        if (result.Result != ButtonResult.Yes) return;
+                        await _contosoRepository.Orders.DeleteAsync(deleteOrder.Id);
+                    });
                 //todo : 삭제된 오더를 화면에서 삭제해야하는거 아닌가??
             }
             catch (OrderDeletionException ex)
@@ -240,6 +266,8 @@ namespace UnoContoso.ViewModels
                     SetBusy("LoadOrders", true);
                     Orders.Clear();
                     MasterOrdersList.Clear();
+                    SelectedOrder = null;
+                    SelectedCustomer = null;
                 });
 
             var orders = await _contosoRepository.Orders.GetAsync();
