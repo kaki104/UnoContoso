@@ -19,6 +19,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Base\DialogViewModelBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Behaviors\CommandBarBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\DataGridBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Behaviors\NavigationViewBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Controls\ConfirmControl.xaml.cs">
@@ -30,16 +31,17 @@
     <Compile Include="$(MSBuildThisFileDirectory)ControlViewModels\ConfirmViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ControlViewModels\MessageViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converters\Converters.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\EntityChanges.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventArgs\BusyEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EventArgs\CustomerEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EventArgs\MessageEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\BusyEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Events\CustomerEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\MessageEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\DataGridHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\StreamHelperEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\CustomerWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\LineItemWrapper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\OrderDeletionException.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Model\OrderSavingException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Model\OrderWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StateTriggers\MobileScreenTrigger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserControls\CollapsibleSearchBox.xaml.cs">

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UnoContoso.Models.System
+namespace UnoContoso.Models
 {
     /// <summary>
     /// Navigation Menu Item model

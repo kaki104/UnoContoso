@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Uno;
 using Uno.Extensions;
+using UnoContoso.EventArgs;
+using UnoContoso.Events;
 using UnoContoso.Helpers;
 using UnoContoso.Model;
 using UnoContoso.Models;
@@ -81,15 +83,16 @@ namespace UnoContoso.ViewModels
             IContosoRepository contosoRepository)
             : base(containerProvider)
         {
-            Title = "Customer";
             _contosoRepository = contosoRepository;
-            Customers = new ObservableCollection<CustomerWrapper>();
 
             Init();
         }
 
         private void Init()
         {
+            Title = "Customer";
+            Customers = new ObservableCollection<CustomerWrapper>();
+
             ViewDetailCommand = new DelegateCommand(OnViewDetail, 
                 () => SelectedCustomer != null)
                 .ObservesProperty(() => SelectedCustomer);
@@ -99,7 +102,42 @@ namespace UnoContoso.ViewModels
             NewCustomerCommand = new DelegateCommand(OnNewCustomer);
             SyncCommand = new DelegateCommand(OnSync);
 
+            EventAggregator.GetEvent<CustomerEvent>()
+                .Subscribe(ReceivedCustomerEvnet, false);
+
             PropertyChanged += CustomerListViewModel_PropertyChanged;
+        }
+
+        private void ReceivedCustomerEvnet(CustomerEventArgs obj)
+        {
+            switch (obj.Changes)
+            {
+                case Enums.EntityChanges.None:
+                    break;
+                case Enums.EntityChanges.Changed:
+                    {
+                        var customer = _allCustomers
+                            .FirstOrDefault(c => c.Model.Id == obj.Customer.Id);
+                        if (customer == null) return;
+                        customer.Model = obj.Customer;
+                        customer.UpdateProperty();
+                    }
+                    break;
+                case Enums.EntityChanges.Added:
+                    {
+                        var customer = new CustomerWrapper(_contosoRepository, obj.Customer);
+                        _allCustomers.Add(customer);
+                    }
+                    break;
+                case Enums.EntityChanges.Deleted:
+                    {
+                        var customer = _allCustomers
+                            .FirstOrDefault(c => c.Model.Id == obj.Customer.Id);
+                        if (customer == null) return;
+                        _allCustomers.Remove(customer);
+                    }
+                    break;
+            }
         }
 
         public override void Destroy()
@@ -123,6 +161,7 @@ namespace UnoContoso.ViewModels
 
         private async Task SetCustomersAsync(string queryText)
         {
+            Customers.Clear();
             if(string.IsNullOrEmpty(queryText))
             {
                 Customers.AddRange(_allCustomers);
@@ -132,7 +171,6 @@ namespace UnoContoso.ViewModels
                 await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
                 {
                     List<CustomerWrapper> customers = GetCustomers(queryText);
-
                     Customers.AddRange(customers);
                 });
             }
@@ -162,7 +200,7 @@ namespace UnoContoso.ViewModels
         {
             if(string.IsNullOrEmpty(searchBoxText))
             {
-                Customers = _allCustomers;
+                Customers.AddRange(_allCustomers);
                 SuggestItems = null;
             }
             else
@@ -238,7 +276,7 @@ namespace UnoContoso.ViewModels
                     async () => 
                     {
                         _allCustomers = await GetCustomerListAsync();
-                        Customers = _allCustomers; 
+                        Customers.AddRange(_allCustomers);
                     });
                 SetBusy("FirstLoading", false);
             }

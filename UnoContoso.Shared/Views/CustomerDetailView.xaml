@@ -87,21 +87,21 @@
                     ToolTipService.ToolTip="Save" 
                     Command="{x:Bind ViewModel.SaveCommand}"
                     Width="50"
-                    Visibility="{x:Bind ViewModel.Customer.IsInEdit, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    Visibility="{x:Bind ViewModel.Customer.IsInEdit, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 <AppBarButton
                     Icon="Cancel"
                     Label="Cancel"
                     ToolTipService.ToolTip="Cancel" 
                     Command="{x:Bind ViewModel.CancelCommand}"
                     Width="50"
-                    Visibility="{x:Bind ViewModel.Customer.IsInEdit, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    Visibility="{x:Bind ViewModel.Customer.IsInEdit, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}"/>
                 <AppBarButton
                     Icon="Edit"
                     Label="Edit"
                     ToolTipService.ToolTip="Edit" 
                     Command="{x:Bind ViewModel.EditCommand}"
                     Width="50"
-                    Visibility="{x:Bind ViewModel.Customer.IsInEdit, Converter={StaticResource ReverseBoolToVisibilityConverter}}"/>
+                    Visibility="{x:Bind ViewModel.Customer.IsInEdit, Mode=OneWay, Converter={StaticResource ReverseBoolToVisibilityConverter}}"/>
                 <AppBarButton
                     Icon="Shop"
                     Label="Add order"
@@ -114,7 +114,7 @@
                     ToolTipService.ToolTip="Refresh orders" 
                     Command="{x:Bind ViewModel.RefreshOrderCommand}"
                     Width="50"
-                    Visibility="{x:Bind ViewModel.Customer.IsInEdit, Converter={StaticResource ReverseBoolToVisibilityConverter}}"/>
+                    Visibility="{x:Bind ViewModel.Customer.IsInEdit, Mode=OneWay, Converter={StaticResource ReverseBoolToVisibilityConverter}}"/>
             </CommandBar>
 
             <uc:CollapsibleSearchBox
@@ -124,7 +124,7 @@
                 CollapseWidth="{StaticResource LargeWindowSnapPoint}"
                 RelativePanel.AlignRightWithPanel="True"
                 Text="{x:Bind ViewModel.SearchBoxText, Mode=TwoWay}"
-                ItemsSource="{x:Bind ViewModel.SuggestItems}"
+                ItemsSource="{Binding SuggestItems, Mode=OneWay}"
                 QueryText="{x:Bind ViewModel.QueryText, Mode=TwoWay}" />
 
             <ScrollViewer
@@ -151,47 +151,47 @@
                             MinWidth="120"
                             Margin="0,8,16,8"
                             Header="First name"
-                            IsReadOnly="{x:Bind ViewModel.Customer.IsInEdit, Converter={StaticResource BoolNegationConverter}}"
+                            IsReadOnly="{x:Bind ViewModel.Customer.IsInEdit, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                             RelativePanel.AlignLeftWithPanel="True"
-                            Text="{x:Bind ViewModel.Customer.FirstName, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.Customer.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBox
                             x:Name="LastName"
                             MinWidth="120"
                             Margin="0,8,16,8"
                             Header="Last name"
-                            IsReadOnly="{x:Bind ViewModel.Customer.IsInEdit, Mode=OneWay}"
+                            IsReadOnly="{x:Bind ViewModel.Customer.IsInEdit, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                             RelativePanel.RightOf="FirstName"
-                            Text="{x:Bind ViewModel.Customer.LastName, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.Customer.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBox
                             x:Name="CompanyText"
                             MinWidth="120"
                             Margin="0,8,16,0"
                             Header="Company name"
-                            IsReadOnly="{x:Bind ViewModel.Customer.IsInEdit, Mode=OneWay}"
+                            IsReadOnly="{x:Bind ViewModel.Customer.IsInEdit, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                             RelativePanel.AlignLeftWithPanel="True"
                             RelativePanel.Below="FirstName"
-                            Text="{x:Bind ViewModel.Customer.Company, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.Customer.Company, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBox
                             x:Name="PhoneNumber"
                             MinWidth="132"
                             Margin="0,8,16,0"
                             Header="Primary phone"
                             InputScope="TelephoneNumber"
-                            IsReadOnly="{x:Bind ViewModel.Customer.IsInEdit, Mode=OneWay}"
+                            IsReadOnly="{x:Bind ViewModel.Customer.IsInEdit, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                             RelativePanel.Below="FirstName"
                             RelativePanel.RightOf="CompanyText"
-                            Text="{x:Bind ViewModel.Customer.Phone, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.Customer.Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBox
                             x:Name="EmailText"
                             MinWidth="160"
                             Margin="0,8,16,0"
                             Header="Primary email"
                             InputScope="EmailNameOrAddress"
-                            IsReadOnly="{x:Bind ViewModel.Customer.IsInEdit, Mode=OneWay}"
+                            IsReadOnly="{x:Bind ViewModel.Customer.IsInEdit, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
                             RelativePanel.AlignLeftWithPanel="False"
                             RelativePanel.Below="FirstName"
                             RelativePanel.RightOf="PhoneNumber"
-                            Text="{x:Bind ViewModel.Customer.Email, Mode=TwoWay}" />
+                            Text="{x:Bind ViewModel.Customer.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </RelativePanel>
 
                     <Border Background="#FF91C1E7">
@@ -204,8 +204,8 @@
                     <TextBox
                         Margin="8,8,0,12"
                         Header="Primary address"
-                        IsReadOnly="{x:Bind ViewModel.Customer.IsInEdit, Mode=OneWay}"
-                        Text="{x:Bind ViewModel.Customer.Address, Mode=TwoWay}" />
+                        IsReadOnly="{x:Bind ViewModel.Customer.IsInEdit, Converter={StaticResource BoolNegationConverter}, Mode=OneWay}"
+                        Text="{x:Bind ViewModel.Customer.Address, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <Border Background="#FF91C1E7">
                         <TextBlock 

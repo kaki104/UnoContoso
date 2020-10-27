@@ -7,12 +7,13 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnoContoso.Enums;
 using UnoContoso.Models;
 using UnoContoso.Repository;
 
 namespace UnoContoso.Model
 {
-    public class CustomerWrapper : BindableBase, IEditableObject, INotifyDataErrorInfo, IComparable
+    public class CustomerWrapper : BindableBase, IEditableObject
     {
         private readonly IContosoRepository _contosoRepository;
         private Customer _model;
@@ -205,30 +206,37 @@ namespace UnoContoso.Model
             set => SetProperty(ref _isInEdit, value);
         }
 
-        public bool HasErrors => throw new NotImplementedException();
-
         /// <summary>
         /// Saves customer data that has been edited.
         /// </summary>
-        public async Task SaveAsync()
+        public async Task<Tuple<bool, string>> SaveAsync()
         {
+            EntityChanges change = EntityChanges.Changed;
             IsInEdit = false;
             IsModified = false;
             if (IsNewCustomer)
             {
                 IsNewCustomer = false;
-                //todo:화면에 새로 추가된 녀석 보여주기 위해서 하는 것
-                //App.ViewModel.Customers.Add(this);
+                change = EntityChanges.Added;
             }
 
-            await _contosoRepository.Customers.UpsertAsync(Model);
+            try
+            {
+                var customer = await _contosoRepository.Customers.UpsertAsync(Model);
+                RefreshOrders();
+                Model = customer;
+            }
+            catch (CustomerSavingException ex)
+            {
+                return new Tuple<bool, string>(false, ex.Message);
+            }
+            return new Tuple<bool, string>(true, change.ToString());
         }
 
         /// <summary>
         /// Raised when the user cancels the changes they've made to the customer data.
         /// </summary>
         public event EventHandler AddNewCustomerCanceled;
-        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
         /// <summary>
         /// Cancels any in progress edits.
@@ -287,11 +295,7 @@ namespace UnoContoso.Model
             await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
             {
                 Orders.Clear();
-                foreach (var order in orders)
-                {
-                    Orders.Add(order);
-                }
-
+                Orders.AddRange(orders);
             });
         }
 
@@ -313,29 +317,15 @@ namespace UnoContoso.Model
         /// </summary>
         public async void EndEdit() => await SaveAsync();
 
-        private Dictionary<string, List<string>> _errors = new Dictionary<string, List<string>>();
-
-        public System.Collections.IEnumerable GetErrors(string propertyName)
+        public void UpdateProperty()
         {
-            if (propertyName == null)
-            {
-                propertyName = string.Empty;
-            }
-
-            if (_errors.Keys.Contains(propertyName))
-            {
-                return _errors[propertyName];
-            }
-            else
-            {
-                return null;
-            }
+            RaisePropertyChanged(nameof(FirstName));
+            RaisePropertyChanged(nameof(LastName));
+            RaisePropertyChanged(nameof(Address));
+            RaisePropertyChanged(nameof(Company));
+            RaisePropertyChanged(nameof(Phone));
+            RaisePropertyChanged(nameof(Email));
         }
 
-        public int CompareTo(object obj)
-        {
-            int lnCompare = Model.Id.CompareTo((obj as CustomerWrapper).Model.Id);
-            return lnCompare;
-        }
     }
 }

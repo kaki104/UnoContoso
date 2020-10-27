@@ -30,41 +30,6 @@
     </UserControl.Resources>
     
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource LargeWindowSnapPoint}" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <stateTriggers:MobileScreenTrigger InteractionMode="Touch" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="mainCommandBar.(RelativePanel.AlignBottomWithPanel)" Value="True" />
-                        <Setter Target="mainCommandBar.(RelativePanel.AlignLeftWithPanel)" Value="True" />
-                        <Setter Target="mainCommandBar.(RelativePanel.AlignRightWithPanel)" Value="True" />
-                        <Setter Target="mainCommandBar.(RelativePanel.LeftOf)" Value="" />
-                        <Setter Target="mainCommandBar.(RelativePanel.RightOf)" Value="" />
-                        <Setter Target="mainCommandBar.HorizontalAlignment" Value="Stretch" />
-                        <Setter Target="CustomerSearchBox.Width" Value="300" />
-                        <Setter Target="RootDataGrid.Margin" Value="0,10,0,80" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-        
         <RelativePanel>
             <TextBlock 
                 x:Name="PageTitle"
@@ -75,6 +40,7 @@
                 x:Name="mainCommandBar"
                 Background="White"
                 HorizontalAlignment="Right"
+                DefaultLabelPosition="Right"
                 RelativePanel.LeftOf="CustomerSearchBox"
                 RelativePanel.RightOf="PageTitle">
                 <AppBarButton
@@ -139,34 +105,70 @@
                         <toolkit:DataGridTextColumn
                             Header="First name"
                             Tag="FirstName"
-                            Binding="{Binding FirstName}"
+                            Binding="{Binding FirstName, Mode=OneWay}"
                             CanUserSort="False"
                             HeaderStyle="{StaticResource DataGridNonSortableColumnHeaderStyle}"/>
                         <toolkit:DataGridTextColumn
                             Header="Last name"
                             Tag="LastName"
-                            Binding="{Binding LastName}"/>
+                            Binding="{Binding LastName, Mode=OneWay}"/>
                         <toolkit:DataGridTextColumn
                             Header="Address"
-                            Binding="{Binding Address}"
+                            Binding="{Binding Address, Mode=OneWay}"
                             CanUserSort="False"
                             HeaderStyle="{StaticResource DataGridNonSortableColumnHeaderStyle}"/>
                         <toolkit:DataGridTextColumn
                             Header="Company"
-                            Binding="{Binding Company}"/>
+                            Binding="{Binding Company, Mode=OneWay}"/>
                         <toolkit:DataGridTextColumn
                             Header="Phone"
-                            Binding="{Binding Phone}"
+                            Binding="{Binding Phone, Mode=OneWay}"
                             CanUserSort="False" 
                             HeaderStyle="{StaticResource DataGridNonSortableColumnHeaderStyle}"/>
                         <toolkit:DataGridTextColumn
                             Header="Email"
-                            Binding="{Binding Email}"
+                            Binding="{Binding Email, Mode=OneWay}"
                             CanUserSort="False" 
                             HeaderStyle="{StaticResource DataGridNonSortableColumnHeaderStyle}"/>
                     </toolkit:DataGrid.Columns>
                 </toolkit:DataGrid>
             </Grid>
         </RelativePanel>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource LargeWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <stateTriggers:MobileScreenTrigger InteractionMode="Touch" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="mainCommandBar.(RelativePanel.AlignBottomWithPanel)" Value="True" />
+                        <Setter Target="mainCommandBar.(RelativePanel.AlignLeftWithPanel)" Value="True" />
+                        <Setter Target="mainCommandBar.(RelativePanel.AlignRightWithPanel)" Value="True" />
+                        <Setter Target="mainCommandBar.(RelativePanel.LeftOf)" Value="" />
+                        <Setter Target="mainCommandBar.(RelativePanel.RightOf)" Value="" />
+                        <Setter Target="mainCommandBar.HorizontalAlignment" Value="Stretch" />
+                        <Setter Target="CustomerSearchBox.Width" Value="300" />
+                        <Setter Target="RootDataGrid.Margin" Value="0,10,0,80" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
     </Grid>
 </UserControl>

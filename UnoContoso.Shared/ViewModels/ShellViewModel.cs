@@ -12,7 +12,7 @@ using System.Text;
 using UnoContoso.EventArgs;
 using UnoContoso.Events;
 using UnoContoso.Models.Consts;
-using UnoContoso.Models.System;
+using UnoContoso.Models;
 using UnoContoso.Views;
 
 namespace UnoContoso.ViewModels

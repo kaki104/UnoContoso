@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Uno.Extensions;
-using UnoContoso.Models.System;
+using UnoContoso.Models;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 

@@ -99,10 +99,5 @@ namespace UnoContoso.Repository.Sql
                 await _db.SaveChangesAsync();
             }
         }
-
-        public Task<JObject> GetJObjectAsync(Guid id)
-        {
-            return null;
-        }
     }
 }

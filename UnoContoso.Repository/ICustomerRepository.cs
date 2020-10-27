@@ -50,8 +50,6 @@ namespace UnoContoso.Repository
         /// </summary>
         Task<Customer> GetAsync(Guid id);
 
-        Task<JObject> GetJObjectAsync(Guid id);
-
         /// <summary>
         /// Adds a new customer if the customer does not exist, updates the 
         /// existing customer otherwise.
