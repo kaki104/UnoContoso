@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using ImTools;
 
 namespace UnoContoso.Repository.Sql
 {
@@ -61,16 +62,28 @@ namespace UnoContoso.Repository.Sql
 
         public async Task<IEnumerable<Customer>> GetAsync(string value)
         {
-            return await _db.Customers
-                .Where(customer =>
-                        customer.FirstName.ToLower().StartsWith(value) ||
-                        customer.LastName.ToLower().StartsWith(value) ||
-                        customer.Email.ToLower().StartsWith(value) ||
-                        customer.Phone.ToLower().StartsWith(value) ||
-                        customer.Address.ToLower().StartsWith(value))
-                .OrderBy(customer => customer.ToString())
-                .AsNoTracking()
-                .ToListAsync();
+            value = value.ToLower();
+            //쿼리 에러 때문에 복잡하게 할 수 없어서 첫번째 단어로만 검색하도록 수정
+            string[] parameters = value.Split(' ');
+
+            try
+            {
+                var customers = await _db.Customers
+                    .AsNoTracking()
+                    .Where(customer =>
+                            customer.FirstName.ToLower().StartsWith(parameters[0]) ||
+                            customer.LastName.ToLower().StartsWith(parameters[0]) ||
+                            customer.Email.ToLower().StartsWith(parameters[0]) ||
+                            customer.Phone.ToLower().StartsWith(parameters[0]) ||
+                            customer.Company.ToLower().StartsWith(parameters[0]) ||
+                            customer.Address.ToLower().StartsWith(parameters[0]))
+                    .ToListAsync();
+                return customers;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public async Task<Customer> UpsertAsync(Customer customer)

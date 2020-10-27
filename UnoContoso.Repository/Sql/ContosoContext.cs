@@ -57,5 +57,6 @@ namespace UnoContoso.Repository.Sql
         /// Gets the line items DbSet.
         /// </summary>
         public DbSet<LineItem> LineItems { get; set; }
+
     }
 }

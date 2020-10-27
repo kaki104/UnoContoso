@@ -33,6 +33,7 @@
         <RelativePanel>
             <TextBlock 
                 x:Name="PageTitle"
+                Margin="0,0,0,0"
                 Text="{x:Bind ViewModel.Title}"
                 Style="{StaticResource PageTitleTextBlockStyle}"/>
 
@@ -43,6 +44,9 @@
                 DefaultLabelPosition="Right"
                 RelativePanel.LeftOf="CustomerSearchBox"
                 RelativePanel.RightOf="PageTitle">
+                <i:Interaction.Behaviors>
+                    <behaviors:CommandBarBehavior/>
+                </i:Interaction.Behaviors>
                 <AppBarButton
                     Icon="Contact"
                     Label="View details"
@@ -105,18 +109,14 @@
                         <toolkit:DataGridTextColumn
                             Header="First name"
                             Tag="FirstName"
-                            Binding="{Binding FirstName, Mode=OneWay}"
-                            CanUserSort="False"
-                            HeaderStyle="{StaticResource DataGridNonSortableColumnHeaderStyle}"/>
+                            Binding="{Binding FirstName, Mode=OneWay}"/>
                         <toolkit:DataGridTextColumn
                             Header="Last name"
                             Tag="LastName"
                             Binding="{Binding LastName, Mode=OneWay}"/>
                         <toolkit:DataGridTextColumn
                             Header="Address"
-                            Binding="{Binding Address, Mode=OneWay}"
-                            CanUserSort="False"
-                            HeaderStyle="{StaticResource DataGridNonSortableColumnHeaderStyle}"/>
+                            Binding="{Binding Address, Mode=OneWay}"/>
                         <toolkit:DataGridTextColumn
                             Header="Company"
                             Binding="{Binding Company, Mode=OneWay}"/>
@@ -151,6 +151,9 @@
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
                     </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="PageTitle.Margin" Value="30,0,0,0"/>
+                    </VisualState.Setters>
                 </VisualState>
                 <VisualState>
                     <VisualState.StateTriggers>
@@ -163,6 +166,7 @@
                         <Setter Target="mainCommandBar.(RelativePanel.LeftOf)" Value="" />
                         <Setter Target="mainCommandBar.(RelativePanel.RightOf)" Value="" />
                         <Setter Target="mainCommandBar.HorizontalAlignment" Value="Stretch" />
+                        <Setter Target="PageTitle.Margin" Value="20,0,0,0"/>
                         <Setter Target="CustomerSearchBox.Width" Value="300" />
                         <Setter Target="RootDataGrid.Margin" Value="0,10,0,80" />
                     </VisualState.Setters>

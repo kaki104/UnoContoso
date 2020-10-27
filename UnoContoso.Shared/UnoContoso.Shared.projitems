@@ -47,6 +47,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UserControls\CollapsibleSearchBox.xaml.cs">
       <DependentUpon>CollapsibleSearchBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)UserControls\ViewModelElement.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CustomerDetailViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\CustomerListViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\HomeViewModel.cs" />

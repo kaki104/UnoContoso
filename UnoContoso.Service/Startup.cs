@@ -51,8 +51,7 @@ namespace UnoContoso.Service
                     });
             });
             var db = new ContosoContext(new DbContextOptionsBuilder<ContosoContext>()
-                .UseSqlite(
-                $"Data Source={_appHost.ContentRootPath}/Contoso.db").Options);
+                .UseSqlite($"Data Source={_appHost.ContentRootPath}/Contoso.db").Options);
             services.AddScoped<ICustomerRepository, SqlCustomerRepository>(_ => new SqlCustomerRepository(db));
             services.AddScoped<IOrderRepository, SqlOrderRepository>(_ => new SqlOrderRepository(db));
             services.AddScoped<IProductRepository, SqlProductRepository>(_ => new SqlProductRepository(db));

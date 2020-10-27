@@ -327,5 +327,9 @@ namespace UnoContoso.Model
             RaisePropertyChanged(nameof(Email));
         }
 
+        public override string ToString()
+        {
+            return Model.ToString();
+        }
     }
 }

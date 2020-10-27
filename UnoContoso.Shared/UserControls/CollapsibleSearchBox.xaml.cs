@@ -64,6 +64,7 @@ namespace UnoContoso.UserControls
 
         private void SearchBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
+            if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput) return;
             Text = sender.Text;
         }
 
@@ -77,7 +78,13 @@ namespace UnoContoso.UserControls
 
         // Using a DependencyProperty as the backing store for Text.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof(string), typeof(CollapsibleSearchBox), new PropertyMetadata(null));
+            DependencyProperty.Register("Text", typeof(string), typeof(CollapsibleSearchBox), new PropertyMetadata(null, TextChanged));
+
+        private static void TextChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
+        {
+            var control = (CollapsibleSearchBox)dependencyObject;
+            control.searchBox.Text = args.NewValue.ToString();
+        }
 
         #endregion
 

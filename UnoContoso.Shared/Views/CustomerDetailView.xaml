@@ -13,53 +13,12 @@
     xmlns:uc="using:UnoContoso.UserControls" 
     xmlns:stateTriggers="using:UnoContoso.StateTriggers"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <uc:ViewModelElement x:Key="ViewModelElement"
+                             ViewModel="{x:Bind ViewModel}"/>
+    </UserControl.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource LargeWindowSnapPoint}" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="EmailText.(RelativePanel.AlignLeftWithPanel)" Value="True" />
-                        <Setter Target="EmailText.(RelativePanel.Below)" Value="CompanyText" />
-                        <Setter Target="EmailText.(RelativePanel.RightOf)" Value=""/>
-                        <Setter Target="DetailPanel.Margin" Value="12,0,0,0" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState>
-                    <VisualState.StateTriggers>
-                        <stateTriggers:MobileScreenTrigger InteractionMode="Touch" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="DetailPanel.(RelativePanel.Above)" Value="mainCommandBar" />
-                        <Setter Target="mainCommandBar.(RelativePanel.AlignBottomWithPanel)" Value="True" />
-                        <Setter Target="mainCommandBar.(RelativePanel.AlignLeftWithPanel)" Value="True" />
-                        <Setter Target="mainCommandBar.(RelativePanel.AlignRightWithPanel)" Value="True" />
-                        <Setter Target="mainCommandBar.(RelativePanel.LeftOf)" Value="" />
-                        <Setter Target="mainCommandBar.(RelativePanel.RightOf)" Value="" />
-                        <Setter Target="mainCommandBar.HorizontalAlignment" Value="Stretch" />
-                        <Setter Target="CustomerSearchBox.Width" Value="300" />
-                        <Setter Target="EmailText.(RelativePanel.AlignLeftWithPanel)" Value="True" />
-                        <Setter Target="EmailText.(RelativePanel.Below)" Value="CompanyText" />
-                        <Setter Target="EmailText.(RelativePanel.RightOf)" Value=""/>
-                        <Setter Target="DetailPanel.Margin" Value="0,0,0,80" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-
         <RelativePanel>
             <Button 
                 x:Name="BackButton"
@@ -215,6 +174,7 @@
                     </Border>
                     
                     <toolkit:DataGrid
+                        x:Name="DataGrid"
                         Margin="0,4,0,0"
                         BorderThickness="0"
                         CanUserReorderColumns="False"
@@ -232,7 +192,10 @@
                                     <DataTemplate>
                                         <HyperlinkButton
                                             Content="{Binding InvoiceNumber}"
-                                            Margin="12,0"/>
+                                            Margin="12,0"
+                                            Command="{Binding Source={StaticResource ViewModelElement}, 
+                                                Path=ViewModel.ViewInvoiceCommand}"
+                                            CommandParameter="{Binding}"/>
                                     </DataTemplate>
                                 </toolkit:DataGridTemplateColumn.CellTemplate>
                             </toolkit:DataGridTemplateColumn>
@@ -306,6 +269,52 @@
                 </StackPanel>
             </ScrollViewer>
         </RelativePanel>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource LargeWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MediumWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="EmailText.(RelativePanel.AlignLeftWithPanel)" Value="True" />
+                        <Setter Target="EmailText.(RelativePanel.Below)" Value="CompanyText" />
+                        <Setter Target="EmailText.(RelativePanel.RightOf)" Value=""/>
+                        <Setter Target="DetailPanel.Margin" Value="12,0,0,0" />
+                        <Setter Target="BackButton.Margin" Value="24,0,0,0" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <stateTriggers:MobileScreenTrigger InteractionMode="Touch" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="DetailPanel.(RelativePanel.Above)" Value="mainCommandBar" />
+                        <Setter Target="mainCommandBar.(RelativePanel.AlignBottomWithPanel)" Value="True" />
+                        <Setter Target="mainCommandBar.(RelativePanel.AlignLeftWithPanel)" Value="True" />
+                        <Setter Target="mainCommandBar.(RelativePanel.AlignRightWithPanel)" Value="True" />
+                        <Setter Target="mainCommandBar.(RelativePanel.LeftOf)" Value="" />
+                        <Setter Target="mainCommandBar.(RelativePanel.RightOf)" Value="" />
+                        <Setter Target="mainCommandBar.HorizontalAlignment" Value="Stretch" />
+                        <Setter Target="CustomerSearchBox.Width" Value="300" />
+                        <Setter Target="EmailText.(RelativePanel.AlignLeftWithPanel)" Value="True" />
+                        <Setter Target="EmailText.(RelativePanel.Below)" Value="CompanyText" />
+                        <Setter Target="EmailText.(RelativePanel.RightOf)" Value=""/>
+                        <Setter Target="DetailPanel.Margin" Value="0,0,0,80" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
 
     </Grid>
 </UserControl>

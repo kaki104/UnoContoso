@@ -22,6 +22,7 @@
 //  THE SOFTWARE.
 //  ---------------------------------------------------------------------------------
 
+using Newtonsoft.Json;
 using System;
 
 namespace UnoContoso.Models

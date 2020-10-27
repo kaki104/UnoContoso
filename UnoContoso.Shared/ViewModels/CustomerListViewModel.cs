@@ -5,6 +5,7 @@ using Prism.Regions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -91,6 +92,7 @@ namespace UnoContoso.ViewModels
         private void Init()
         {
             Title = "Customer";
+            _allCustomers = new List<CustomerWrapper>();
             Customers = new ObservableCollection<CustomerWrapper>();
 
             ViewDetailCommand = new DelegateCommand(OnViewDetail, 
@@ -178,20 +180,17 @@ namespace UnoContoso.ViewModels
 
         private List<CustomerWrapper> GetCustomers(string queryText)
         {
-            string[] parameters = queryText.Split(new char[] { ' ' },
-                StringSplitOptions.RemoveEmptyEntries);
+            Debug.WriteLine($"queryText : {queryText}");
 
             var customers = _allCustomers
-                .Where(c => parameters.Any(p =>
-                    c.Address.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
-                    c.FirstName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
-                    c.LastName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
-                    c.Company.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
-                .OrderByDescending(c => parameters.Count(p =>
-                    c.Address.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
-                    c.FirstName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
-                    c.LastName.StartsWith(p, StringComparison.OrdinalIgnoreCase) ||
-                    c.Company.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
+                .Where(c => 
+                    c.Address.StartsWith(queryText, StringComparison.OrdinalIgnoreCase) ||
+                    c.FirstName.StartsWith(queryText, StringComparison.OrdinalIgnoreCase) ||
+                    c.LastName.StartsWith(queryText, StringComparison.OrdinalIgnoreCase) ||
+                    c.ToString().StartsWith(queryText, StringComparison.OrdinalIgnoreCase) ||
+                    c.Email.StartsWith(queryText, StringComparison.OrdinalIgnoreCase) ||
+                    c.Phone.StartsWith(queryText, StringComparison.OrdinalIgnoreCase) ||
+                    c.Company.StartsWith(queryText, StringComparison.OrdinalIgnoreCase))
                 .ToList();
             return customers;
         }
@@ -200,6 +199,7 @@ namespace UnoContoso.ViewModels
         {
             if(string.IsNullOrEmpty(searchBoxText))
             {
+                Customers.Clear();
                 Customers.AddRange(_allCustomers);
                 SuggestItems = null;
             }
@@ -269,13 +269,14 @@ namespace UnoContoso.ViewModels
         {
             base.OnNavigatedTo(navigationContext);
 
-            if(Customers?.Any() == false)
+            if(_allCustomers?.Any() == false)
             {
                 SetBusy("FirstLoading", true);
                 await DispatcherHelper.ExecuteOnUIThreadAsync(
                     async () => 
                     {
                         _allCustomers = await GetCustomerListAsync();
+                        Customers.Clear();
                         Customers.AddRange(_allCustomers);
                     });
                 SetBusy("FirstLoading", false);

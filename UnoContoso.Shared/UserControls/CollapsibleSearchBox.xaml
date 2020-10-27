@@ -13,16 +13,13 @@
     <Grid>
         <ToggleButton
             x:Name="searchButton"
-            Width="32"
-            Height="32"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
+            Background="Transparent"
             Checked="SearchButton_Checked"
-            Visibility="Collapsed">
-            <FontIcon
-                FontFamily="Segoe MDL2 Assets"
-                FontSize="12"
-                Glyph="&#xE11A;" />
+            Visibility="Collapsed"
+            Padding="4">
+            <SymbolIcon Symbol="Find" />
         </ToggleButton>
 
         <AutoSuggestBox
