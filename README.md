@@ -1,5 +1,5 @@
 # UnoContoso
-Port the Contoso UWP project to the Uno-Prism project.
+This is a project that ported Microsoft's Contoso Enterprise UWP app to Uno Platform Prism.
 
 ## Source
 https://github.com/microsoft/Windows-appsample-customers-orders-database
@@ -39,4 +39,16 @@ https://github.com/microsoft/Windows-appsample-customers-orders-database
 - Select Multiple startup projects and change the Action of the UnoContoso.Service and UnoContoso.Uwp projects to Start.
 - Press the Start button to start the service and UWP app at the same time.
 
+## Tested platform
+- Uwp
+- Droid
+- iOS
+- Wasm
+- macOS (Can run, but appears to be throwing an error on the Customers page)
 
+## Notice
+- Currently, this sample project has only been developed for basic functions.
+- For each platform, design revision, function check, and further development are required.
+
+## Known Issues
+-
