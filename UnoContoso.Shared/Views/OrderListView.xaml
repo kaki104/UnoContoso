@@ -104,7 +104,7 @@
                                 FontWeight="SemiBold"
                                 Text="{x:Bind ViewModel.SelectedOrder.InvoiceNumber, Mode=OneWay}" />
                         </StackPanel>
-                        <TextBlock Text="{Binding ViewModel.SelectedOrderGrandTotalFormatted, Mode=OneWay}" />
+                        <TextBlock Text="{x:Bind ViewModel.SelectedOrderGrandTotalFormatted, Mode=OneWay}" />
 
                         <StackPanel Margin="0,20,0,20">
                             <TextBlock
@@ -241,6 +241,7 @@
                         <Setter Target="mainCommandBar.HorizontalAlignment" Value="Stretch" />
                         <Setter Target="OrderSearchBox.Width" Value="300" />
                         <Setter Target="listSplitView.IsPaneOpen" Value="False" />
+                        <Setter Target="listSplitView.Margin" Value="0,0,0,30" />
                         <Setter Target="PageTitle.Margin" Value="30,0,0,0"/>
                     </VisualState.Setters>
                 </VisualState>

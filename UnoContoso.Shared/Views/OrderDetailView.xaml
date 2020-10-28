@@ -15,6 +15,7 @@
     xmlns:models="using:UnoContoso.Models" 
     x:Name="Root"
     mc:Ignorable="d">
+
     <UserControl.Resources>
         <Style TargetType="ComboBox">
             <Setter Property="MinWidth" Value="150" />
@@ -62,12 +63,12 @@
                     AutomationProperties.Name="Remove the addition"
                     Background="Transparent"
                     BorderThickness="0"
-                    Content="&#xE711;"
-                    FontFamily="Segoe MDL2 Assets"
                     Foreground="Red" 
                     Command="{Binding ElementName=LineItemListView, 
                         Path=DataContext.RemoveCommand}"
-                    CommandParameter="{Binding}" />
+                    CommandParameter="{Binding}">
+                    <SymbolIcon Symbol="Cancel"/>
+                </Button>
             </Grid>
         </DataTemplate>
 
@@ -82,18 +83,18 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="40" />
                     <ColumnDefinition Width="240" />
-                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <TextBlock
-                    Grid.ColumnSpan="3"
-                    Margin="0,0,0,0"
-                    Padding="0,0,0,0"
-                    Text="{x:Bind Product.Name}" />
                 <Border
                     Grid.Row="1"
                     Grid.ColumnSpan="3"
                     BorderBrush="LightGray"
                     BorderThickness="0,0,0,1" />
+                <TextBlock
+                    Grid.ColumnSpan="3"
+                    Margin="0,0,0,0"
+                    Padding="0,0,0,0"
+                    Text="{x:Bind Product.Name}" />
                 <TextBlock
                     Grid.Row="1"
                     Margin="8,0,0,0"
@@ -113,24 +114,24 @@
                 <Button
                     Grid.Row="1"
                     Grid.Column="2"
-                    Margin="4,0,0,0"
+                    Margin="4,0,10,0"
                     Padding="4"
                     HorizontalAlignment="Right"
                     AutomationProperties.Name="Cancel the addition"
                     Background="Transparent"
                     BorderThickness="0"
-                    Content="&#xE711;"
-                    FontFamily="Segoe MDL2 Assets"
                     Foreground="Red" 
                     Command="{Binding ElementName=LineItemListView, 
                         Path=DataContext.RemoveCommand}"
-                    CommandParameter="{Binding}" />
+                    CommandParameter="{Binding}">
+                    <SymbolIcon Symbol="Cancel"/>
+                </Button>
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
-    
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        
+
         <RelativePanel>
             <Button 
                 x:Name="BackButton"
@@ -385,20 +386,20 @@
                                 Text="Product" />
                             <TextBlock
                                 Grid.Row="1"
-                                Margin="48,0,0,0"
-                                Padding="0,0,0,0"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Bottom"
-                                FontWeight="SemiBold"
-                                Text="Price" />
-                            <TextBlock
-                                Grid.Row="1"
                                 Margin="8,0,0,0"
                                 Padding="0,0,0,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
                                 FontWeight="SemiBold"
                                 Text="(Qty)" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Margin="48,0,0,0"
+                                Padding="0,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                FontWeight="SemiBold"
+                                Text="Price" />
                         </Grid>
                         <!--Line item list-->
                         <ListView
@@ -483,11 +484,12 @@
                                     </Style>
                                 </AutoSuggestBox.ItemContainerStyle>
                             </AutoSuggestBox>
+
                             <Grid
                                 x:Name="ItemQtyPanel"
                                 Grid.Column="2">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="80" />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="80" />
                                 </Grid.ColumnDefinitions>
                                 <TextBlock
@@ -522,11 +524,11 @@
                                     AutomationProperties.Name="Add product"
                                     Background="Transparent"
                                     BorderThickness="0"
-                                    Content="&#xE73E;"
-                                    FontFamily="Segoe MDL2 Assets"
                                     Foreground="Green"
                                     Visibility="{x:Bind ViewModel.Order.HasNewLineItem, Mode=OneWay}" 
-                                    Command="{x:Bind ViewModel.AddProductCommand}"/>
+                                    Command="{x:Bind ViewModel.AddProductCommand}">
+                                    <SymbolIcon Symbol="Accept"/>
+                                </Button>
                                 <Button
                                     Grid.Row="0"
                                     Grid.Column="1"
@@ -536,11 +538,11 @@
                                     AutomationProperties.Name="Cancel the addition"
                                     Background="Transparent"
                                     BorderThickness="0"
-                                    Content="&#xE711;"
-                                    FontFamily="Segoe MDL2 Assets"
                                     Foreground="Red"
                                     Visibility="{x:Bind ViewModel.Order.HasNewLineItem, Mode=OneWay}"
-                                    Command="{x:Bind ViewModel.CancelProductCommand}"/>
+                                    Command="{x:Bind ViewModel.CancelProductCommand}">
+                                    <SymbolIcon Symbol="Cancel"/>
+                                </Button>
                             </Grid>
                         </Grid>
 
@@ -640,7 +642,7 @@
                         <AdaptiveTrigger MinWindowWidth="{StaticResource MinWindowSnapPoint}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="sp1.(Grid.ColumnSpan)" Value="1" />
+                        <Setter Target="sp1.(Grid.ColumnSpan)" Value="4" />
                         <Setter Target="StatusPanel.(Grid.Row)" Value="1" />
                         <Setter Target="StatusPanel.(Grid.RowSpan)" Value="1" />
                         <Setter Target="StatusPanel.(Grid.Column)" Value="0" />
@@ -662,12 +664,12 @@
                         <stateTriggers:MobileScreenTrigger InteractionMode="Touch" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
+                        <Setter Target="sp1.(Grid.ColumnSpan)" Value="4" />
                         <Setter Target="orderBody.(RelativePanel.Above)" Value="mainCommandBar" />
                         <Setter Target="orderBody.(RelativePanel.AlignBottomWithPanel)" Value="False" />
                         <Setter Target="mainCommandBar.(RelativePanel.AlignBottomWithPanel)" Value="True" />
                         <Setter Target="mainCommandBar.(RelativePanel.AlignLeftWithPanel)" Value="True" />
                         <Setter Target="mainCommandBar.(RelativePanel.AlignRightWithPanel)" Value="True" />
-                        <Setter Target="sp1.(Grid.ColumnSpan)" Value="1" />
                         <Setter Target="StatusPanel.(Grid.Row)" Value="1" />
                         <Setter Target="StatusPanel.(Grid.RowSpan)" Value="1" />
                         <Setter Target="StatusPanel.(Grid.Column)" Value="0" />
@@ -679,10 +681,10 @@
                         <Setter Target="LineItemListView.ItemTemplate" Value="{StaticResource NarrowLineItemTemplate}" />
                         <Setter Target="DefaultLineItemsHeader.Visibility" Value="Collapsed" />
                         <Setter Target="NarrowLineItemsHeader.Visibility" Value="Visible" />
-                        <Setter Target="ItemQtyPanel.(Grid.Row)" Value="1" />
+                        <!--<Setter Target="ItemQtyPanel.(Grid.Row)" Value="1" />
                         <Setter Target="ItemQtyPanel.(Grid.Column)" Value="0" />
-                        <Setter Target="ItemQtyPanel.HorizontalAlignment" Value="Right" />
-                        <Setter Target="ItemQtyPanel.Margin" Value="0,8,4,0" />
+                        <Setter Target="ItemQtyPanel.HorizontalAlignment" Value="Right" />-->
+                        <Setter Target="ItemQtyPanel.Margin" Value="0,0,6,0" />
                         <Setter Target="ItemAddPanel.(Grid.Row)" Value="1" />
                         <Setter Target="ItemAddPanel.(Grid.Column)" Value="1" />
                         <Setter Target="totalsPanel.Margin" Value="0,20,0,0" />
