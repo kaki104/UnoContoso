@@ -1,27 +1,20 @@
 # UnoContoso
-Port the Contoso UWP project to the Uno-Prism project.
+This is a project that ported Microsoft's Contoso Enterprise UWP app to Uno Platform Prism.
 
 ## Source
 https://github.com/microsoft/Windows-appsample-customers-orders-database
 
 ## Environment
-- unoapp-prism Uno.ProjectTemplates.Dotnet::3.2.0-dev.254
-
 - Microsoft.EntityFrameworkCore v3.1.9
 - Microsoft.EntityFrameworkCore.Sqlite v3.1.9
 - NETStandard.Library v2.0.3
-
 - Prism.Core v8.0.0.1909
 - Prism.DryIoc.Uno v8.0.0.1909
-
 - Uno.Microsoft.Toolkit.Uwp.UI.Controls v6.1.0-build.191
 - Uno.Microsoft.Toolkit.Uwp.UI.Controls.DataGrid v6.1.0-build.191
-
 - Uno.UI v3.2.0-dev.254
-
 - Uno.WindowsStateTriggers v1.1.1-uno.132
 - WindowsStateTriggers v1.1.0
-
 - UWP Target version : Windows 10, version 1903(10.0; Build 18362)
 - UWP Min version : Windows 10, version 1809(10.0; Build 17763)
 
@@ -39,4 +32,16 @@ https://github.com/microsoft/Windows-appsample-customers-orders-database
 - Select Multiple startup projects and change the Action of the UnoContoso.Service and UnoContoso.Uwp projects to Start.
 - Press the Start button to start the service and UWP app at the same time.
 
+## Tested platform
+- Uwp
+- Droid
+- iOS
+- Wasm
+- macOS (Can run, but appears to be throwing an error on the Customers page)
 
+## Notice
+- Currently, this sample project has only been developed for basic functions.
+- For each platform, design revision, function check, and further development are required.
+
+## Known Issues
+-
