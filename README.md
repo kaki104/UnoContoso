@@ -5,23 +5,16 @@ This is a project that ported Microsoft's Contoso Enterprise UWP app to Uno Plat
 https://github.com/microsoft/Windows-appsample-customers-orders-database
 
 ## Environment
-- unoapp-prism Uno.ProjectTemplates.Dotnet::3.2.0-dev.254
-
 - Microsoft.EntityFrameworkCore v3.1.9
 - Microsoft.EntityFrameworkCore.Sqlite v3.1.9
 - NETStandard.Library v2.0.3
-
 - Prism.Core v8.0.0.1909
 - Prism.DryIoc.Uno v8.0.0.1909
-
 - Uno.Microsoft.Toolkit.Uwp.UI.Controls v6.1.0-build.191
 - Uno.Microsoft.Toolkit.Uwp.UI.Controls.DataGrid v6.1.0-build.191
-
 - Uno.UI v3.2.0-dev.254
-
 - Uno.WindowsStateTriggers v1.1.1-uno.132
 - WindowsStateTriggers v1.1.0
-
 - UWP Target version : Windows 10, version 1903(10.0; Build 18362)
 - UWP Min version : Windows 10, version 1809(10.0; Build 17763)
 
