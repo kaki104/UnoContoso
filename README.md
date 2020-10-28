@@ -42,6 +42,8 @@ https://github.com/microsoft/Windows-appsample-customers-orders-database
 ## Notice
 - Currently, this sample project has only been developed for basic functions.
 - For each platform, design revision, function check, and further development are required.
+- iOS and macOS projects have been verified in Visual Studio for Mac. However, I was not familiar with the tool, so I couldn't check it completely.
 
 ## Known Issues
--
+- The AutoSuggestBox contained in the OrderDetailView is not working smoothly. We are going to change to another control.
+- CustomerListView screen data cannot be loaded from macOS project.
