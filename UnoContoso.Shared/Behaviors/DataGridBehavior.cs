@@ -21,7 +21,7 @@ namespace UnoContoso.Behaviors
 
         private void AssociatedObject_Sorting(object sender, DataGridColumnEventArgs e)
         {
-            var datas = AssociatedObject.ItemsSource as ObservableCollection<CustomerWrapper>;
+            var datas = AssociatedObject.ItemsSource as ObservableCollection<object>;
             AssociatedObject.Sort(e.Column, datas.Sort);
         }
 

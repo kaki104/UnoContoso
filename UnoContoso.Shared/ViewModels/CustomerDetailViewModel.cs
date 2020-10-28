@@ -114,7 +114,7 @@ namespace UnoContoso.ViewModels
 
         private void SetCustomer(string queryText)
         {
-            var part = queryText.Split(",");
+            var part = queryText.Split(',');
             if (part.Length != 2) return;
             NavigationService.RequestNavigate("CustomerDetailView",
                 new NavigationParameters
