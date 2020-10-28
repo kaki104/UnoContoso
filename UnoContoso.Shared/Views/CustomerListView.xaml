@@ -168,7 +168,7 @@
                         <Setter Target="mainCommandBar.HorizontalAlignment" Value="Stretch" />
                         <Setter Target="PageTitle.Margin" Value="20,0,0,0"/>
                         <Setter Target="CustomerSearchBox.Width" Value="300" />
-                        <Setter Target="RootDataGrid.Margin" Value="0,10,0,80" />
+                        <Setter Target="RootDataGrid.Margin" Value="0,10,0,30" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>

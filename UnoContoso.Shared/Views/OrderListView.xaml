@@ -40,7 +40,7 @@
             <CommandBar
                 x:Name="mainCommandBar"
                 HorizontalAlignment="Stretch"
-                Background="Transparent"
+                Background="White"
                 RelativePanel.LeftOf="OrderSearchBox"
                 RelativePanel.RightOf="PageTitle">
                 <AppBarButton
@@ -236,8 +236,12 @@
                         <Setter Target="mainCommandBar.(RelativePanel.AlignBottomWithPanel)" Value="True" />
                         <Setter Target="mainCommandBar.(RelativePanel.AlignLeftWithPanel)" Value="True" />
                         <Setter Target="mainCommandBar.(RelativePanel.AlignRightWithPanel)" Value="True" />
+                        <Setter Target="mainCommandBar.(RelativePanel.LeftOf)" Value="" />
+                        <Setter Target="mainCommandBar.(RelativePanel.RightOf)" Value="" />
+                        <Setter Target="mainCommandBar.HorizontalAlignment" Value="Stretch" />
                         <Setter Target="OrderSearchBox.Width" Value="300" />
                         <Setter Target="listSplitView.IsPaneOpen" Value="False" />
+                        <Setter Target="PageTitle.Margin" Value="30,0,0,0"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
